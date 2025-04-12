@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول تناوبی کامل | طراحی شده توسط محمدجواد میرشکاری</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://unpkg.com/periodic-table-js@1.0.1/dist/periodic-table.min.js"></script>
+    <style>
+        :root {
+            --primary: #3f51b5;
+            --secondary: #ff7043;
+            --alkali: #ff6d00;
+            --alkaline: #ffab40;
+            --transition: #ffd600;
+            --post-transition: #64dd17;
+            --metalloid: #76ff03;
+            --nonmetal: #00e676;
+            --halogen: #00b8d4;
+            --noble: #00b0ff;
+            --lanthanide: #6200ea;
+            --actinide: #aa00ff;
+            --dark: #263238;
+            --light: #f5f5f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* جدول تناوبی */
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            grid-gap: 8px;
+            margin: 3rem auto;
+            max-width: 1200px;
+        }
+
+        .element {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .element:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .element .number {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .element .symbol {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .element .name {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        /* رنگ‌بندی عناصر */
+        .alkali { background-color: var(--alkali); color: white; }
+        .alkaline { background-color: var(--alkaline); color: var(--dark); }
+        .transition { background-color: var(--transition); color: var(--dark); }
+        .post-transition { background-color: var(--post-transition); color: white; }
+        .metalloid { background-color: var(--metalloid); color: var(--dark); }
+        .nonmetal { background-color: var(--nonmetal); color: white; }
+        .halogen { background-color: var(--halogen); color: white; }
+        .noble { background-color: var(--noble); color: white; }
+        .lanthanide { background-color: var(--lanthanide); color: white; }
+        .actinide { background-color: var(--actinide); color: white; }
+
+        /* پنل اطلاعات عنصر */
+        .element-details {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 3rem;
+            display: none;
+        }
+
+        .element-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .element-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-left: 2rem;
+            color: white;
+        }
+
+        .element-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .element-category {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .element-properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .property-card {
+            background: var(--light);
+            padding: 1.2rem;
+            border-radius: 10px;
+        }
+
+        .property-card h4 {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .property-card p {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* ابزارهای شیمی */
+        .tools-section {
+            margin: 5rem 0;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .tool-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .tool-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* پاورقی */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .creator {
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 1200px) {
+            .periodic-table {
+                grid-template-columns: repeat(9, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .periodic-table {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .element-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .element-preview {
+                margin-left: 0;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .periodic-table {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>جدول تناوبی کامل مندلیف</h1>
+            <p class="subtitle">طراحی شده توسط محمدجواد میرشکاری - تمام 118 عنصر با جزئیات کامل</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- جدول تناوبی -->
+        <div class="periodic-table" id="periodicTable">
+            <!-- عناصر به صورت دینامیک اضافه خواهند شد -->
+        </div>
+
+        <!-- پنل اطلاعات عنصر -->
+        <div class="element-details" id="elementDetails">
+            <div class="element-header">
+                <div class="element-preview" id="elementPreview">
+                    <span id="elementSymbol">H</span>
+                </div>
+                <div class="element-info">
+                    <h2 id="elementName">هیدروژن</h2>
+                    <span class="element-category" id="elementCategory">غیرفلز</span>
+                    <p id="elementDescription">سبک‌ترین و فراوان‌ترین عنصر در جهان</p>
+                </div>
+            </div>
+            
+            <div class="element-properties">
+                <div class="property-card">
+                    <h4>عدد اتمی</h4>
+                    <p id="atomicNumber">1</p>
+                </div>
+                <div class="property-card">
+                    <h4>جرم اتمی</h4>
+                    <p id="atomicMass">1.008</p>
+                </div>
+                <div class="property-card">
+                    <h4>چگالی</h4>
+                    <p id="density">0.08988 g/L</p>
+                </div>
+                <div class="property-card">
+                    <h4>نقطه ذوب</h4>
+                    <p id="meltingPoint">-259.16 °C</p>
+                </div>
+                <div class="property-card">
+                    <h4>نقطه جوش</h4>
+                    <p id="boilingPoint">-252.87 °C</p>
+                </div>
+                <div class="property-card">
+                    <h4>الکترونگاتیوی</h4>
+                    <p id="electronegativity">2.20</p>
+                </div>
+                <div class="property-card">
+                    <h4>کشف شده توسط</h4>
+                    <p id="discoveredBy">هنری کاوندیش</p>
+                </div>
+                <div class="property-card">
+                    <h4>سال کشف</h4>
+                    <p id="discoveryYear">1766</p>
+                </div>
+                <div class="property-card">
+                    <h4>پیکربندی الکترونی</h4>
+                    <p id="electronConfig">1s¹</p>
+                </div>
+                <div class="property-card">
+                    <h4>حالت اکسایش</h4>
+                    <p id="oxidationStates">+1, -1</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ابزارهای شیمی -->
+        <div class="tools-section">
+            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary);">ابزارهای پیشرفته شیمی</h2>
+            
+            <div class="tools-grid">
+                <div class="tool-card" id="stoichiometryTool">
+                    <i class="fas fa-calculator"></i>
+                    <h3>ماشین حساب استوکیومتری</h3>
+                    <p>محاسبه نسبت‌های کمی در واکنش‌های شیمیایی</p>
+                </div>
+                
+                <div class="tool-card" id="molecularTool">
+                    <i class="fas fa-atom"></i>
+                    <h3>شبیه‌ساز ساختار مولکولی</h3>
+                    <p>طراحی و مشاهده ساختار سه‌بعدی مولکول‌ها</p>
+                </div>
+                
+                <div class="tool-card" id="concentrationTool">
+                    <i class="fas fa-vial"></i>
+                    <h3>محاسبه گر غلظت</h3>
+                    <p>محاسبه مولاریته، نرمالیته و درصد غلظت محلول‌ها</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>تمامی اطلاعات بر اساس آخرین داده‌های IUPAC به روزرسانی شده‌اند</p>
+            <div class="creator">
+                طراحی و توسعه توسط: <strong>محمدجواد میرشکاری</strong> | تمام حقوق محفوظ است © 2023
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ایجاد نمونه از جدول تناوبی
+        const table = new PeriodicTable();
+        
+        // دریافت تمام عناصر
+        const allElements = table.getAllElements();
+        
+        // تابع برای تبدیل نام دسته‌بندی انگلیسی به فارسی
+        function getCategoryName(category) {
+            const categories = {
+                'diatomic nonmetal': 'غیرفلز دواتمی',
+                'noble gas': 'گاز نجیب',
+                'alkali metal': 'فلز قلیایی',
+                'alkaline earth metal': 'فلز قلیایی خاکی',
+                'metalloid': 'شبه فلز',
+                'polyatomic nonmetal': 'غیرفلز چنداتمی',
+                'post-transition metal': 'فلز پس‌انتقالی',
+                'transition metal': 'فلز واسطه',
+                'lanthanide': 'لانتانید',
+                'actinide': 'آکتینید'
+            };
+            return categories[category] || category;
+        }
+        
+        // تابع برای تبدیل واحد کلوین به سلسیوس
+        function kelvinToCelsius(k) {
+            if (!k) return "نامشخص";
+            return (k - 273.15).toFixed(2) + " °C";
+        }
+        
+        // تابع برای ایجاد جدول تناوبی
+        function generatePeriodicTable() {
+            const periodicTable = document.getElementById('periodicTable');
+            
+            // ابتدا 118 خانه خالی ایجاد می‌کنیم
+            for (let i = 0; i < 118; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'element empty';
+                periodicTable.appendChild(cell);
+            }
+            
+            // سپس عناصر را در جایگاه صحیح قرار می‌دهیم
+            allElements.forEach(element => {
+                const position = (element.ypos - 1) * 18 + (element.xpos - 1);
+                if (periodicTable.children[position]) {
+                    periodicTable.children[position].innerHTML = `
+                        <div class="number">${element.number}</div>
+                        <div class="symbol">${element.symbol}</div>
+                        <div class="name">${element.name}</div>
+                    `;
+                    
+                    // تعیین دسته‌بندی رنگ
+                    let elementClass = '';
+                    if (element.category.includes('alkali metal')) {
+                        elementClass = 'alkali';
+                    } else if (element.category.includes('alkaline earth metal')) {
+                        elementClass = 'alkaline';
+                    } else if (element.category.includes('transition metal')) {
+                        elementClass = 'transition';
+                    } else if (element.category.includes('post-transition metal')) {
+                        elementClass = 'post-transition';
+                    } else if (element.category.includes('metalloid')) {
+                        elementClass = 'metalloid';
+                    } else if (element.category.includes('nonmetal')) {
+                        elementClass = 'nonmetal';
+                    } else if (element.category.includes('halogen')) {
+                        elementClass = 'halogen';
+                    } else if (element.category.includes('noble gas')) {
+                        elementClass = 'noble';
+                    } else if (element.category.includes('lanthanide')) {
+                        elementClass = 'lanthanide';
+                    } else if (element.category.includes('actinide')) {
+                        elementClass = 'actinide';
+                    }
+                    
+                    periodicTable.children[position].className = `element ${elementClass}`;
+                    periodicTable.children[position].setAttribute('data-element', element.number);
+                }
+            });
+            
+            // افزودن رویداد کلیک به عناصر
+            const elements = document.querySelectorAll('.element:not(.empty)');
+            const elementDetails = document.getElementById('elementDetails');
+            const elementPreview = document.getElementById('elementPreview');
+            
+            elements.forEach(element => {
+                element.addEventListener('click', function() {
+                    const elementNumber = this.getAttribute('data-element');
+                    const elementData = table.get(elementNumber);
+                    
+                    // پر کردن اطلاعات
+                    document.getElementById('elementName').textContent = elementData.name;
+                    document.getElementById('elementSymbol').textContent = elementData.symbol;
+                    document.getElementById('elementCategory').textContent = getCategoryName(elementData.category);
+                    document.getElementById('elementDescription').textContent = elementData.summary || "اطلاعاتی موجود نیست";
+                    document.getElementById('atomicNumber').textContent = elementData.number;
+                    document.getElementById('atomicMass').textContent = elementData.atomic_mass ? elementData.atomic_mass.toFixed(3) : "نامشخص";
+                    document.getElementById('density').textContent = elementData.density ? `${elementData.density} g/cm³` : "نامشخص";
+                    document.getElementById('meltingPoint').textContent = kelvinToCelsius(elementData.melt);
+                    document.getElementById('boilingPoint').textContent = kelvinToCelsius(elementData.boil);
+                    document.getElementById('electronegativity').textContent = elementData.electronegativity_pauling || "نامشخص";
+                    document.getElementById('discoveredBy').textContent = elementData.discovered_by || "نامشخص";
+                    document.getElementById('discoveryYear').textContent = elementData.year_discovered || "نامشخص";
+                    document.getElementById('electronConfig').textContent = elementData.electron_configuration || "نامشخص";
+                    document.getElementById('oxidationStates').textContent = elementData.oxidation_states || "نامشخص";
+                    
+                    // تنظیم رنگ پیش‌نمایش
+                    elementPreview.className = 'element-preview';
+                    if (elementData.category.includes('alkali metal')) {
+                        elementPreview.classList.add('alkali');
+                    } else if (elementData.category.includes('alkaline earth metal')) {
+                        elementPreview.classList.add('alkaline');
+                    } else if (elementData.category.includes('transition metal')) {
+                        elementPreview.classList.add('transition');
+                    } else if (elementData.category.includes('post-transition metal')) {
+                        elementPreview.classList.add('post-transition');
+                    } else if (elementData.category.includes('metalloid')) {
+                        elementPreview.classList.add('metalloid');
+                    } else if (elementData.category.includes('nonmetal')) {
+                        elementPreview.classList.add('nonmetal');
+                    } else if (elementData.category.includes('halogen')) {
+                        elementPreview.classList.add('halogen');
+                    } else if (elementData.category.includes('noble gas')) {
+                        elementPreview.classList.add('noble');
+                    } else if (elementData.category.includes('lanthanide')) {
+                        elementPreview.classList.add('lanthanide');
+                    } else if (elementData.category.includes('actinide')) {
+                        elementPreview.classList.add('actinide');
+                    }
+                    
+                    // نمایش پنل اطلاعات
+                    elementDetails.style.display = 'block';
+                    
+                    // اسکرول به پنل اطلاعات
+                    elementDetails.scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+            
+            // نمایش اطلاعات هیدروژن به صورت پیش‌فرض
+            const hydrogen = table.get(1);
+            document.getElementById('elementName').textContent = hydrogen.name;
+            document.getElementById('elementSymbol').textContent = hydrogen.symbol;
+            document.getElementById('elementCategory').textContent = getCategoryName(hydrogen.category);
+            document.getElementById('elementDescription').textContent = hydrogen.summary;
+            document.getElementById('atomicNumber').textContent = hydrogen.number;
+            document.getElementById('atomicMass').textContent = hydrogen.atomic_mass.toFixed(3);
+            document.getElementById('density').textContent = "0.08988 g/L";
+            document.getElementById('meltingPoint').textContent = "-259.16 °C";
+            document.getElementById('boilingPoint').textContent = "-252.87 °C";
+            document.getElementById('electronegativity').textContent = "2.20";
+            document.getElementById('discoveredBy').textContent = "هنری کاوندیش";
+            document.getElementById('discoveryYear').textContent = "1766";
+            document.getElementById('electronConfig').textContent = "1s¹";
+            document.getElementById('oxidationStates').textContent = "+1, -1";
+            elementPreview.classList.add('nonmetal');
+            elementDetails.style.display = 'block';
+        }
+        
+        // اجرای تابع پس از بارگذاری صفحه
+        document.addEventListener('DOMContentLoaded', generatePeriodicTable);
+        
+        // ابزارهای شیمی
+        document.getElementById('stoichiometryTool').addEventListener('click', function() {
+            alert('ابزار استوکیومتری در حال توسعه است!');
+        });
+        
+        document.getElementById('molecularTool').addEventListener('click', function() {
+            alert('شبیه‌ساز مولکولی در حال توسعه است!');
+        });
+        
+        document.getElementById('concentrationTool').addEventListener('click', function() {
+            alert('محاسبه گر غلظت در حال توسعه است!');
+        });
+    </script>
+</body>
+</html>
