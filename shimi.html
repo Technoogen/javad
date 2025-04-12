@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول تناوبی پیشرفته | ابزار کامل برای شیمیدانان</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3f51b5;
+            --secondary: #ff7043;
+            --alkali: #ff6d00;
+            --alkaline: #ffab40;
+            --transition: #ffd600;
+            --post-transition: #64dd17;
+            --metalloid: #76ff03;
+            --nonmetal: #00e676;
+            --halogen: #00b8d4;
+            --noble: #00b0ff;
+            --lanthanide: #6200ea;
+            --actinide: #aa00ff;
+            --dark: #263238;
+            --light: #f5f5f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* جدول تناوبی */
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(18, 1fr);
+            grid-gap: 8px;
+            margin: 3rem auto;
+            max-width: 1200px;
+        }
+
+        .element {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .element:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .element .number {
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .element .symbol {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .element .name {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        /* رنگ‌بندی عناصر */
+        .alkali { background-color: var(--alkali); color: white; }
+        .alkaline { background-color: var(--alkaline); color: var(--dark); }
+        .transition { background-color: var(--transition); color: var(--dark); }
+        .post-transition { background-color: var(--post-transition); color: white; }
+        .metalloid { background-color: var(--metalloid); color: var(--dark); }
+        .nonmetal { background-color: var(--nonmetal); color: white; }
+        .halogen { background-color: var(--halogen); color: white; }
+        .noble { background-color: var(--noble); color: white; }
+        .lanthanide { background-color: var(--lanthanide); color: white; }
+        .actinide { background-color: var(--actinide); color: white; }
+
+        /* پنل اطلاعات عنصر */
+        .element-details {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 3rem;
+            display: none;
+        }
+
+        .element-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .element-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-left: 2rem;
+            color: white;
+        }
+
+        .element-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .element-category {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .element-properties {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .property-card {
+            background: var(--light);
+            padding: 1.2rem;
+            border-radius: 10px;
+        }
+
+        .property-card h4 {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .property-card p {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        /* ابزارهای شیمی */
+        .tools-section {
+            margin: 5rem 0;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .tool-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .tool-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        /* پاورقی */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 5rem;
+        }
+
+        .creator {
+            font-size: 1.1rem;
+            margin-top: 2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 1200px) {
+            .periodic-table {
+                grid-template-columns: repeat(9, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .periodic-table {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .element-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .element-preview {
+                margin-left: 0;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .periodic-table {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>جدول تناوبی پیشرفته</h1>
+            <p class="subtitle">کامل‌ترین مجموعه ابزارهای شیمیایی برای پژوهشگران و دانشجویان</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- جدول تناوبی -->
+        <div class="periodic-table" id="periodicTable">
+            <!-- گروه 1 - فلزات قلیایی -->
+            <div class="element alkali" data-element="hydrogen">
+                <div class="number">1</div>
+                <div class="symbol">H</div>
+                <div class="name">هیدروژن</div>
+            </div>
+            <div class="element alkali" data-element="lithium">
+                <div class="number">3</div>
+                <div class="symbol">Li</div>
+                <div class="name">لیتیم</div>
+            </div>
+            <!-- بقیه عناصر به همین صورت اضافه شوند -->
+            
+            <!-- گروه 2 - فلزات قلیایی خاکی -->
+            <div class="element alkaline" data-element="beryllium">
+                <div class="number">4</div>
+                <div class="symbol">Be</div>
+                <div class="name">بریلیم</div>
+            </div>
+            
+            <!-- فلزات واسطه -->
+            <div class="element transition" data-element="scandium">
+                <div class="number">21</div>
+                <div class="symbol">Sc</div>
+                <div class="name">اسکاندیم</div>
+            </div>
+            
+            <!-- شبه فلزات -->
+            <div class="element metalloid" data-element="boron">
+                <div class="number">5</div>
+                <div class="symbol">B</div>
+                <div class="name">بور</div>
+            </div>
+            
+            <!-- نافلزات -->
+            <div class="element nonmetal" data-element="carbon">
+                <div class="number">6</div>
+                <div class="symbol">C</div>
+                <div class="name">کربن</div>
+            </div>
+            
+            <!-- هالوژن‌ها -->
+            <div class="element halogen" data-element="fluorine">
+                <div class="number">9</div>
+                <div class="symbol">F</div>
+                <div class="name">فلوئور</div>
+            </div>
+            
+            <!-- گازهای نجیب -->
+            <div class="element noble" data-element="helium">
+                <div class="number">2</div>
+                <div class="symbol">He</div>
+                <div class="name">هلیوم</div>
+            </div>
+            
+            <!-- لانتانیدها -->
+            <div class="element lanthanide" data-element="lanthanum">
+                <div class="number">57</div>
+                <div class="symbol">La</div>
+                <div class="name">لانتان</div>
+            </div>
+            
+            <!-- آکتینیدها -->
+            <div class="element actinide" data-element="actinium">
+                <div class="number">89</div>
+                <div class="symbol">Ac</div>
+                <div class="name">آکتینیم</div>
+            </div>
+        </div>
+
+        <!-- پنل اطلاعات عنصر -->
+        <div class="element-details" id="elementDetails">
+            <div class="element-header">
+                <div class="element-preview" id="elementPreview">
+                    <span id="elementSymbol">H</span>
+                </div>
+                <div class="element-info">
+                    <h2 id="elementName">هیدروژن</h2>
+                    <span class="element-category" id="elementCategory">غیرفلز</span>
+                    <p id="elementDescription">سبک‌ترین و فراوان‌ترین عنصر در جهان</p>
+                </div>
+            </div>
+            
+            <div class="element-properties">
+                <div class="property-card">
+                    <h4>عدد اتمی</h4>
+                    <p id="atomicNumber">1</p>
+                </div>
+                <div class="property-card">
+                    <h4>جرم اتمی</h4>
+                    <p id="atomicMass">1.008</p>
+                </div>
+                <div class="property-card">
+                    <h4>چگالی</h4>
+                    <p id="density">0.08988 g/L</p>
+                </div>
+                <div class="property-card">
+                    <h4>نقطه ذوب</h4>
+                    <p id="meltingPoint">-259.16 °C</p>
+                </div>
+                <div class="property-card">
+                    <h4>نقطه جوش</h4>
+                    <p id="boilingPoint">-252.87 °C</p>
+                </div>
+                <div class="property-card">
+                    <h4>الکترونگاتیوی</h4>
+                    <p id="electronegativity">2.20</p>
+                </div>
+                <div class="property-card">
+                    <h4>کشف شده توسط</h4>
+                    <p id="discoveredBy">هنری کاوندیش</p>
+                </div>
+                <div class="property-card">
+                    <h4>سال کشف</h4>
+                    <p id="discoveryYear">1766</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ابزارهای شیمی -->
+        <div class="tools-section">
+            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary);">ابزارهای پیشرفته شیمی</h2>
+            <p style="color: var(--dark); opacity: 0.8; max-width: 800px; margin-bottom: 2rem;">مجموعه کاملی از ابزارهای محاسباتی و تحلیلی برای پژوهش‌های شیمیایی</p>
+            
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <i class="fas fa-calculator"></i>
+                    <h3>ماشین حساب استوکیومتری</h3>
+                    <p>محاسبه نسبت‌های کمی در واکنش‌های شیمیایی</p>
+                </div>
+                
+                <div class="tool-card">
+                    <i class="fas fa-atom"></i>
+                    <h3>شبیه‌ساز ساختار مولکولی</h3>
+                    <p>طراحی و مشاهده ساختار سه‌بعدی مولکول‌ها</p>
+                </div>
+                
+                <div class="tool-card">
+                    <i class="fas fa-vial"></i>
+                    <h3>محاسبه گر غلظت</h3>
+                    <p>محاسبه مولاریته، نرمالیته و درصد غلظت محلول‌ها</p>
+                </div>
+                
+                <div class="tool-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>تحلیلگر واکنش‌ها</h3>
+                    <p>پیش‌بینی محصولات واکنش و محاسبه تغییرات انرژی</p>
+                </div>
+                
+                <div class="tool-card">
+                    <i class="fas fa-temperature-high"></i>
+                    <h3>مبدل واحدهای دما</h3>
+                    <p>تبدیل بین مقیاس‌های مختلف دمایی</p>
+                </div>
+                
+                <div class="tool-card">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>محاسبه گر جرم مولی</h3>
+                    <p>محاسبه جرم مولکولی ترکیبات شیمیایی</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>تمامی اطلاعات بر اساس آخرین داده‌های IUPAC به روزرسانی شده‌اند</p>
+            <div class="creator">
+                طراحی و توسعه توسط: <strong>محمدجواد میرشکاری</strong>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // داده‌های عناصر (مثال)
+        const elementsData = {
+            hydrogen: {
+                name: "هیدروژن",
+                symbol: "H",
+                number: 1,
+                mass: "1.008",
+                category: "غیرفلز",
+                description: "سبک‌ترین و فراوان‌ترین عنصر در جهان",
+                density: "0.08988 g/L",
+                melting: "-259.16 °C",
+                boiling: "-252.87 °C",
+                electronegativity: "2.20",
+                discoveredBy: "هنری کاوندیش",
+                year: "1766",
+                color: "nonmetal"
+            },
+            lithium: {
+                name: "لیتیم",
+                symbol: "Li",
+                number: 3,
+                mass: "6.94",
+                category: "فلز قلیایی",
+                description: "سبک‌ترین فلز جامد با واکنش‌پذیری بالا",
+                density: "0.534 g/cm³",
+                melting: "180.54 °C",
+                boiling: "1342 °C",
+                electronegativity: "0.98",
+                discoveredBy: "یوهان آگوست آرفودسون",
+                year: "1817",
+                color: "alkali"
+           
