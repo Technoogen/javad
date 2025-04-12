@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هوشینو (Hoshino) - چت‌بات هوش مصنوعی پیشرفته</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* تم روز */
+            --primary-day: #6C5CE7;
+            --secondary-day: #A55EEA;
+            --bg-day: #F9F9F9;
+            --card-day: #FFFFFF;
+            --text-day: #2D3436;
+            --bubble-user-day: linear-gradient(135deg, #6C5CE7 0%, #A55EEA 100%);
+            --bubble-bot-day: #FFFFFF;
+            --input-day: #FFFFFF;
+            
+            /* تم شب */
+            --primary-night: #BB86FC;
+            --secondary-night: #3700B3;
+            --bg-night: #121212;
+            --card-night: #1E1E1E;
+            --text-night: #E1E1E1;
+            --bubble-user-night: linear-gradient(135deg, #BB86FC 0%, #3700B3 100%);
+            --bubble-bot-night: #2D2D2D;
+            --input-night: #2D2D2D;
+            
+            /* متغیرهای فعال */
+            --primary: var(--primary-day);
+            --secondary: var(--secondary-day);
+            --bg: var(--bg-day);
+            --card: var(--card-day);
+            --text: var(--text-day);
+            --bubble-user: var(--bubble-user-day);
+            --bubble-bot: var(--bubble-bot-day);
+            --input: var(--input-day);
+            
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition);
+        }
+
+        /* استایل اعلان خوانده شدن پیام */
+        .read-receipt {
+            margin-right: 5px;
+            color: #4CAF50;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .message.sent .read-receipt {
+            opacity: 1;
+        }
+
+        /* اپلیکیشن اصلی */
+        .app-container {
+            max-width: 100%;
+            width: 100%;
+            height: 100vh;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* هدر */
+        .chat-header {
+            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            z-index: 100;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .logo-text h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            font-size: 0.7rem;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* محتوای چت */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* پیام‌ها */
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 3px;
+        }
+
+        .message {
+            max-width: 85%;
+            padding: 1rem 1.3rem;
+            border-radius: var(--radius);
+            line-height: 1.6;
+            position: relative;
+            animation: fadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: var(--shadow);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: var(--bubble-bot);
+            color: var(--text);
+            border-bottom-left-radius: 4px;
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background: var(--bubble-user);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.7;
+            margin-top: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .user-message .message-time {
+            justify-content: flex-end;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .bot-message .message-time {
+            justify-content: flex-start;
+            color: rgba(45, 52, 54, 0.7);
+        }
+
+        /* نشانگر تایپ */
+        .typing-indicator {
+            display: flex;
+            align-self: flex-start;
+            padding: 1rem 1.3rem;
+            background-color: var(--bubble-bot);
+            border-radius: var(--radius);
+            margin-bottom: 0.5rem;
+            border-bottom-left-radius: 4px;
+            box-shadow: var(--shadow);
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.6; }
+            30% { transform: translateY(-5px); opacity: 1; }
+        }
+
+        /* ورودی چت */
+        .chat-input-container {
+            display: flex;
+            padding: 1rem;
+            background-color: var(--card);
+            position: sticky;
+            bottom: 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.9rem 1.3rem;
+            border: none;
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+            background-color: var(--input);
+            box-shadow: var(--shadow);
+            color: var(--text);
+        }
+
+        .chat-input:focus {
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
+        }
+
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            margin-right: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .send-button:hover {
+            transform: scale(1.05) rotate(10deg);
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* پنل ویژگی‌های سریع */
+        .features-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            padding: 1rem;
+            background-color: var(--card);
+            transition: var(--transition);
+        }
+
+        .feature-button {
+            padding: 0.7rem 1.2rem;
+            background-color: var(--input);
+            border: none;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+        }
+
+        .feature-button i {
+            font-size: 0.9rem;
+        }
+
+        .feature-button:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* سوئیچ حالت شب/روز */
+        .theme-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        /* فوتر */
+        .footer {
+            padding: 1.5rem;
+            text-align: center;
+            background-color: var(--card);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .developer-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .developer-info a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .developer-info a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--input);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* انیمیشن‌های پیشرفته */
+        .message img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin-top: 0.8rem;
+            box-shadow: var(--shadow);
+        }
+
+        .message pre {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-top: 0.8rem;
+            direction: ltr;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .message code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        .message ul, .message ol {
+            padding-right: 1.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .message li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* رسپانسیو */
+        @media (max-width: 768px) {
+            .chat-header {
+                padding: 1rem;
+            }
+            
+            .logo-text h1 {
+                font-size: 1.1rem;
+            }
+            
+            .message {
+                max-width: 90%;
+                padding: 0.9rem 1.1rem;
+            }
+            
+            .chat-input {
+                padding: 0.8rem 1.1rem;
+            }
+            
+            .send-button {
+                width: 46px;
+                height: 46px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="chat-header">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>هوشینو (Hoshino)</h1>
+                    <p>چت‌بات هوش مصنوعی پیشرفته</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <label class="theme-switch">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider"></span>
+                </label>
+                <button class="header-btn" title="تنظیمات">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="features-panel" id="featuresPanel">
+            <button class="feature-button" data-prompt="سلام! چطور می‌تونم کمکت کنم؟">
+                <i class="fas fa-handshake"></i> شروع گفتگو
+            </button>
+            <button class="feature-button" data-prompt="آخرین اخبار تکنولوژی را بگو">
+                <i class="fas fa-newspaper"></i> اخبار فناوری
+            </button>
+            <button class="feature-button" data-prompt="یک شعر زیبا بگو">
+                <i class="fas fa-pen-nib"></i> شعر زیبا
+            </button>
+            <button class="feature-button" data-prompt="کد نمونه برای یک وبسایت ساده بده">
+                <i class="fas fa-code"></i> کد نمونه
+            </button>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    سلام! من هوشینو هستم، یک چت‌بات هوش مصنوعی پیشرفته. چطور می‌تونم به شما کمک کنم؟
+                    <div class="message-time">
+                        <i class="far fa-clock"></i>
+                        <span id="current-time"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <button class="send-button" id="sendButton" disabled>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                <input type="text" class="chat-input" id="chatInput" placeholder="پیام خود را اینجا بنویسید..." autocomplete="off">
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="developer-info">
+                <div>
+                    توسعه داده شده توسط: <a href="https://technoogen.github.io/javad/" target="_blank">مهندس محمد جواد میرشکاری</a>
+                </div>
+                <div>
+                    <a href="tel:+989176647611">
+                        <i class="fas fa-phone"></i> 09176647611
+                    </a>
+                </div>
+                <div class="social-links">
+                    <a href="https://technoogen.github.io/javad/" class="social-link" target="_blank" title="وبسایت">
+                        <i class="fas fa-globe"></i>
+                    </a>
+                    <a href="https://github.com/technoogen" class="social-link" target="_blank" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://t.me/technogen_ir" class="social-link" target="_blank" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const featuresPanel = document.getElementById('featuresPanel');
+        const currentTimeElement = document.getElementById('current-time');
+        const themeToggle = document.getElementById('themeToggle');
+
+        // تنظیمات API
+        const API_URL = 'https://api.api-code.ir/gpt-4-save/';
+        const USER_ID = 'USER12345'; // اینجا می‌توانید یک سیستم مدیریت کاربر پیاده‌سازی کنید
+
+        // حالت‌های چت
+        let isTyping = false;
+        let chatHistory = [
+            { role: 'assistant', content: 'سلام! من هوشینو هستم، یک چت‌بات هوش مصنوعی پیشرفته. چطور می‌تونم به شما کمک کنم؟' }
+        ];
+
+        // نمایش زمان جاری
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('fa-IR');
+            currentTimeElement.textContent = `${dateString} - ${timeString}`;
+        }
+
+        // تغییر تم
+        function toggleTheme() {
+            if (themeToggle.checked) {
+                // تم شب
+                document.documentElement.style.setProperty('--primary', 'var(--primary-night)');
+                document.documentElement.style.setProperty('--secondary', 'var(--secondary-night)');
+                document.documentElement.style.setProperty('--bg', 'var(--bg-night)');
+                document.documentElement.style.setProperty('--card', 'var(--card-night)');
+                document.documentElement.style.setProperty('--text', 'var(--text-night)');
+                document.documentElement.style.setProperty('--bubble-user', 'var(--bubble-user-night)');
+                document.documentElement.style.setProperty('--bubble-bot', 'var(--bubble-bot-night)');
+                document.documentElement.style.setProperty('--input', 'var(--input-night)');
+            } else {
+                // تم روز
+                document.documentElement.style.setProperty('--primary', 'var(--primary-day)');
+                document.documentElement.style.setProperty('--secondary', 'var(--secondary-day)');
+                document.documentElement.style.setProperty('--bg', 'var(--bg-day)');
+                document.documentElement.style.setProperty('--card', 'var(--card-day)');
+                document.documentElement.style.setProperty('--text', 'var(--text-day)');
+                document.documentElement.style.setProperty('--bubble-user', 'var(--bubble-user-day)');
+                document.documentElement.style.setProperty('--bubble-bot', 'var(--bubble-bot-day)');
+                document.documentElement.style.setProperty('--input', 'var(--input-day)');
+            }
+        }
+
+        // رویدادهای صفحه
+        chatInput.addEventListener('input', () => {
+            sendButton.disabled = chatInput.value.trim() === '';
+        });
+
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !sendButton.disabled) {
+                sendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+
+        themeToggle.addEventListener('change', toggleTheme);
+
+        // دکمه‌های ویژگی‌های سریع
+        featuresPanel.addEventListener('click', (e) => {
+            if (e.target.classList.contains('feature-button') || e.target.parentElement.classList.contains('feature-button')) {
+                const button = e.target.classList.contains('feature-button') ? e.target : e.target.parentElement;
+                const prompt = button.getAttribute('data-prompt');
+                chatInput.value = prompt;
+                chatInput.focus();
+                sendButton.disabled = false;
+            }
+        });
+
+        // ارسال پیام
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
+
+            // نمایش پیام کاربر
+            const userMessageId = addMessage(message, 'user');
+            chatInput.value = '';
+            sendButton.disabled = true;
+
+            // شبیه‌سازی تایپ کردن ربات
+            showTypingIndicator();
+
+            try {
+                // ارسال به API
+                const response = await fetch(`${API_URL}?userid=${USER_ID}&text=${encodeURIComponent(message)}&type=json`);
+                const data = await response.json();
+                
+                removeTypingIndicator();
+                
+                if (data && data[0] && data[0].result) {
+                    addMessage(data[0].result, 'bot');
+                    chatHistory.push({ role: 'user', content: message });
+                    chatHistory.push({ role: 'assistant', content: data[0].result });
+                    
+                    // نمایش علامت خوانده شدن
+                    markMessageAsRead(userMessageId);
+                } else {
+                    throw new Error('پاسخ نامعتبر از سرور');
+                }
+            } catch (error) {
+                removeTypingIndicator();
+                addMessage("متأسفم، مشکلی در ارتباط با سرور پیش آمد. لطفاً دوباره تلاش کنید.", 'bot');
+                console.error('Error fetching API:', error);
+            }
+        }
+
+        // نمایش نشانگر تایپ
+        function showTypingIndicator() {
+            if (isTyping) return;
+            
+            isTyping = true;
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'typing-indicator';
+            typingDiv.id = 'typingIndicator';
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'typing-dot';
+                typingDiv.appendChild(dot);
+            }
+            
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // حذف نشانگر تایپ
+        function removeTypingIndicator() {
+            isTyping = false;
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+
+        // افزودن پیام به چت
+        function addMessage(content, sender) {
+            const messageId = 'msg-' + Date.now();
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}-message`;
+            messageDiv.id = messageId;
+            
+            // پردازش محتوای پیام برای نمایش بهتر
+            let formattedContent = content;
+            
+            // تبدیل کدها
+            formattedContent = formattedContent.replace(/```([\s\S]*?)```/g, 
+                '<pre><code>$1</code></pre>');
+            
+            // تبدیل لینک‌ها
+            formattedContent = formattedContent.replace(/(https?:\/\/[^\s]+)/g, 
+                '<a href="$1" target="_blank" style="color: inherit; text-decoration: underline;">$1</a>');
+            
+            // تبدیل خطوط جدید
+            formattedContent = formattedContent.replace(/\n/g, '<br>');
+            
+            messageDiv.innerHTML = formattedContent;
+            
+            // افزودن زمان و وضعیت خوانده شدن
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+            const dateString = now.toLocaleDateString('fa-IR');
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'message-time';
+            
+            if (sender === 'user') {
+                timeDiv.innerHTML = `
+                    <span class="read-receipt"><i class="fas fa-check-double"></i></span>
+                    <i class="far fa-clock"></i> ${dateString} - ${timeString}
+                `;
+            } else {
+                timeDiv.innerHTML = `<i class="far fa-clock"></i> ${dateString} - ${timeString}`;
+            }
+            
+            messageDiv.appendChild(timeDiv);
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            return messageId;
+        }
+
+        // علامت گذاری پیام به عنوان خوانده شده
+        function markMessageAsRead(messageId) {
+            const message = document.getElementById(messageId);
+            if (message) {
+                message.classList.add('sent');
+            }
+        }
+
+        // به‌روزرسانی زمان هر دقیقه
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 60000);
+
+        // پیام خوش‌آمدگویی
+        setTimeout(() => {
+            addMessage("برای شروع گفتگو می‌توانید پیام خود را تایپ کنید یا از دکمه‌های بالای صفحه استفاده نمایید.", 'bot');
+        }, 1500);
+    </script>
+</body>
+</html>
