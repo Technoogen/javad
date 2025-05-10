@@ -3,556 +3,1880 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جدول تناوبی کامل | طراحی شده توسط محمدجواد میرشکاری</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/periodic-table-js@1.0.1/dist/periodic-table.min.js"></script>
+    <title>راحین | تجربه‌ای جادویی از طبیعت میمند</title>
     <style>
-        :root {
-            --primary: #3f51b5;
-            --secondary: #ff7043;
-            --alkali: #ff6d00;
-            --alkaline: #ffab40;
-            --transition: #ffd600;
-            --post-transition: #64dd17;
-            --metalloid: #76ff03;
-            --nonmetal: #00e676;
-            --halogen: #00b8d4;
-            --noble: #00b0ff;
-            --lanthanide: #6200ea;
-            --actinide: #aa00ff;
-            --dark: #263238;
-            --light: #f5f5f6;
+        /* Fonts */
+        @font-face {
+            font-family: 'Vazir';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
         }
 
+        @font-face {
+            font-family: 'Vazir';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/Vazir-Bold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        /* Variables */
+        :root {
+            --primary: #3a7d44;
+            --secondary: #d4edda;
+            --accent: #ffd166;
+            --dark: #1a3e23;
+            --light: #f8f9fa;
+            --text: #2d3436;
+            --white: #ffffff;
+            --black: #000000;
+            --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
+            font-family: 'Vazir', sans-serif;
             background-color: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.03"><path fill="%233a7d44" d="M50 0c27.6 0 50 22.4 50 50s-22.4 50-50 50S0 77.6 0 50 22.4 0 50 0zm0 20c-16.6 0-30 13.4-30 30s13.4 30 30 30 30-13.4 30-30-13.4-30-30-30z"/></svg>');
         }
 
-        .container {
-            width: 95%;
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dark);
+        }
+
+        /* Helper Classes */
+        .text-primary {
+            color: var(--primary);
+        }
+
+        .text-accent {
+            color: var(--accent);
+        }
+
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .bg-accent {
+            background-color: var(--accent);
+        }
+
+        /* Particles */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 1.5rem 0;
+        }
+
+        header.scrolled {
+            background-color: rgba(58, 125, 68, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 2rem;
         }
 
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2rem 0;
-            text-align: center;
-            border-radius: 0 0 20px 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-bottom: 3rem;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
         }
 
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
+        .logo:hover {
+            transform: scale(1.05);
         }
 
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        .logo img {
+            height: 60px;
+            width: auto;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
         }
 
-        /* جدول تناوبی */
-        .periodic-table {
-            display: grid;
-            grid-template-columns: repeat(18, 1fr);
-            grid-gap: 8px;
-            margin: 3rem auto;
-            max-width: 1200px;
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--white);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .element {
-            background: white;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--accent);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 2rem;
             cursor: pointer;
-            text-align: center;
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        .mobile-menu-btn:hover {
+            color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
             position: relative;
             overflow: hidden;
         }
 
-        .element:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            z-index: 10;
-        }
-
-        .element .number {
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .element .symbol {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .element .name {
-            font-size: 0.7rem;
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
             opacity: 0.8;
         }
 
-        /* رنگ‌بندی عناصر */
-        .alkali { background-color: var(--alkali); color: white; }
-        .alkaline { background-color: var(--alkaline); color: var(--dark); }
-        .transition { background-color: var(--transition); color: var(--dark); }
-        .post-transition { background-color: var(--post-transition); color: white; }
-        .metalloid { background-color: var(--metalloid); color: var(--dark); }
-        .nonmetal { background-color: var(--nonmetal); color: white; }
-        .halogen { background-color: var(--halogen); color: white; }
-        .noble { background-color: var(--noble); color: white; }
-        .lanthanide { background-color: var(--lanthanide); color: white; }
-        .actinide { background-color: var(--actinide); color: white; }
-
-        /* پنل اطلاعات عنصر */
-        .element-details {
-            background: white;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            margin-top: 3rem;
-            display: none;
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(26, 62, 35, 0.7), rgba(58, 125, 68, 0.5));
         }
 
-        .element-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 2rem;
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+            text-align: center;
         }
 
-        .element-preview {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+        .hero h1 {
+            font-size: 4.5rem;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--white);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+            animation: fadeInUp 1.5s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .hero-btns {
             display: flex;
+            justify-content: center;
+            gap: 2rem;
+            animation: fadeInUp 1.5s ease 0.6s forwards;
+            opacity: 0;
+        }
+
+        /* 3D Button */
+        .btn-3d {
+            position: relative;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.5rem;
+            padding: 1.2rem 2.5rem;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            border-radius: 50px;
+            text-decoration: none;
             font-weight: bold;
-            margin-left: 2rem;
-            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
+                        inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            z-index: 1;
         }
 
-        .element-info h2 {
-            font-size: 2rem;
+        .btn-3d:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3),
+                        inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-3d:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3),
+                        inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn-3d:hover::before {
+            opacity: 1;
+        }
+
+        .btn-3d i {
+            margin-right: 0.5rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--white);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.6;
+            animation: float linear infinite;
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 2rem;
+            position: relative;
+            background-color: var(--white);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-title h2 {
+            font-size: 3.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 1rem;
+        }
+
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            border-radius: 5px;
+        }
+
+        .section-title p {
+            font-size: 1.3rem;
+            color: var(--text);
+            max-width: 700px;
+            margin: 1rem auto 0;
+            opacity: 0.8;
+        }
+
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-text h3 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 2;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .about-feature i {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-top: 0.3rem;
+        }
+
+        .about-feature h4 {
+            font-size: 1.3rem;
+            color: var(--primary);
             margin-bottom: 0.5rem;
         }
 
-        .element-category {
-            display: inline-block;
-            padding: 0.3rem 1rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
+        .about-image {
+            flex: 1;
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .about-image:hover img {
+            transform: scale(1.1);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(58, 125, 68, 0.2), rgba(255, 209, 102, 0.2));
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 8rem 2rem;
+            background-color: var(--secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .products-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 3rem;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            transform-style: preserve-3d;
+        }
+
+        .product-card:hover {
+            transform: translateY(-20px) rotateY(5deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.2);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: var(--accent);
+            color: var(--dark);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
             font-weight: bold;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-info h3 {
+            font-size: 1.8rem;
+            color: var(--primary);
             margin-bottom: 1rem;
         }
 
-        .element-properties {
+        .product-info p {
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .product-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 1.6rem;
+            color: var(--primary);
+        }
+
+        .price::before {
+            content: 'تومان';
+            font-size: 1rem;
+            margin-right: 5px;
+            color: var(--text);
+            opacity: 0.7;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 8rem 2rem;
+            background-color: var(--white);
+            position: relative;
+        }
+
+        .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            padding: 3rem;
+            text-align: center;
+            border-radius: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            background: var(--white);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            z-index: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(58, 125, 68, 0.05), rgba(255, 209, 102, 0.05));
+            z-index: -1;
+        }
+
+        .feature-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: var(--white);
+            font-size: 3rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: rotateY(180deg) scale(1.1);
+            background: linear-gradient(135deg, var(--accent), var(--dark));
+        }
+
+        .feature-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 8rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .testimonials::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100" opacity="0.05"><path fill="%23ffffff" d="M50 0c27.6 0 50 22.4 50 50s-22.4 50-50 50S0 77.6 0 50 22.4 0 50 0zm0 20c-16.6 0-30 13.4-30 30s13.4 30 30 30 30-13.4 30-30-13.4-30-30-30z"/></svg>');
+        }
+
+        .testimonials-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonial-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: var(--transition);
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            padding: 4rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 2rem;
+            overflow: hidden;
+            border: 5px solid var(--accent);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 2rem;
+            position: relative;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .testimonial-text::before,
+        .testimonial-text::after {
+            content: '"';
+            font-size: 4rem;
+            color: var(--accent);
+            opacity: 0.3;
+            position: absolute;
+            font-family: serif;
+        }
+
+        .testimonial-text::before {
+            top: -30px;
+            right: -20px;
+        }
+
+        .testimonial-text::after {
+            bottom: -50px;
+            left: -20px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .testimonial-rating {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 3rem;
+            gap: 1.5rem;
+        }
+
+        .slider-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: var(--white);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .slider-dot.active {
+            opacity: 1;
+            transform: scale(1.3);
+            background-color: var(--accent);
+        }
+
+        .slider-dot::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .slider-dot:hover::before {
+            opacity: 0.3;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 8rem 2rem;
+            background-color: var(--white);
+            position: relative;
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            flex: 1;
+            padding: 3rem;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: var(--white);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .contact-info h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background-color: var(--accent);
+        }
+
+        .contact-details {
+            margin-bottom: 3rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .contact-icon {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-left: 1.5rem;
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+
+        .contact-text h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .social-links {
+            display: flex;
             gap: 1.5rem;
             margin-top: 2rem;
         }
 
-        .property-card {
-            background: var(--light);
-            padding: 1.2rem;
-            border-radius: 10px;
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: var(--transition);
         }
 
-        .property-card h4 {
-            font-size: 0.9rem;
+        .social-links a:hover {
+            background-color: var(--accent);
+            color: var(--dark);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-form {
+            flex: 1;
+            padding: 3rem;
+            border-radius: 20px;
+            background-color: var(--white);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
             color: var(--primary);
-            margin-bottom: 0.5rem;
         }
 
-        .property-card p {
+        .form-control {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            border: 2px solid #eee;
+            border-radius: 12px;
             font-size: 1.1rem;
+            transition: var(--transition);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 5px rgba(58, 125, 68, 0.2);
+            background-color: var(--white);
+        }
+
+        textarea.form-control {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+            color: var(--white);
+            padding: 5rem 2rem 2rem;
+            position: relative;
+        }
+
+        .footer-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+        }
+
+        .footer-col h3 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 4px;
+            background-color: var(--accent);
+        }
+
+        .footer-col p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-col ul li a {
+            color: var(--secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            font-size: 1.1rem;
+            display: block;
+            padding: 0.5rem 0;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--accent);
+            transform: translateX(-10px);
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .footer-logo h2 {
+            font-size: 2rem;
+            color: var(--white);
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+        }
+
+        .developer-credit {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .developer-credit a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: var(--transition);
             font-weight: bold;
         }
 
-        /* ابزارهای شیمی */
-        .tools-section {
-            margin: 5rem 0;
+        .developer-credit a:hover {
+            text-decoration: underline;
+            color: var(--white);
         }
 
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .tool-card {
-            background: white;
-            border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
         }
 
-        .tool-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
+                            inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3),
+                            inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2),
+                            inset 0 -3px 0 rgba(0, 0, 0, 0.3);
+            }
         }
 
-        .tool-card i {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
+        .animate {
+            animation-duration: 1s;
+            animation-fill-mode: both;
         }
 
-        .tool-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
+        .fade-in {
+            animation-name: fadeIn;
         }
 
-        /* پاورقی */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 3rem 0;
-            text-align: center;
-            margin-top: 5rem;
+        .fade-in-up {
+            animation-name: fadeInUp;
         }
 
-        .creator {
-            font-size: 1.1rem;
-            margin-top: 2rem;
-            background: rgba(255,255,255,0.1);
-            padding: 1rem;
-            border-radius: 10px;
-            display: inline-block;
+        .pulse {
+            animation-name: pulse;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
         }
 
-        /* رسپانسیو */
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive Styles */
         @media (max-width: 1200px) {
-            .periodic-table {
-                grid-template-columns: repeat(9, 1fr);
+            .hero h1 {
+                font-size: 3.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 3rem;
+            }
+            
+            .about-content {
+                gap: 3rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            
+            .about-content {
+                flex-direction: column;
+            }
+            
+            .contact-container {
+                flex-direction: column;
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 768px) {
-            .periodic-table {
-                grid-template-columns: repeat(5, 1fr);
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
             }
             
-            .element-header {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-btns {
                 flex-direction: column;
-                text-align: center;
+                gap: 1.5rem;
             }
             
-            .element-preview {
-                margin-left: 0;
-                margin-bottom: 1.5rem;
+            .btn-3d {
+                width: 100%;
             }
         }
 
-        @media (max-width: 480px) {
-            .periodic-table {
-                grid-template-columns: repeat(3, 1fr);
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
             }
             
-            h1 {
-                font-size: 2rem;
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonial-card {
+                padding: 2rem;
+            }
+            
+            .testimonial-text {
+                font-size: 1.2rem;
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>جدول تناوبی کامل مندلیف</h1>
-            <p class="subtitle">طراحی شده توسط محمدجواد میرشکاری - تمام 118 عنصر با جزئیات کامل</p>
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="header-container">
+            <a href="#home" class="logo">
+                <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path fill='%23ffffff' d='M50 0c27.6 0 50 22.4 50 50s-22.4 50-50 50S0 77.6 0 50 22.4 0 50 0zm0 20c-16.6 0-30 13.4-30 30s13.4 30 30 30 30-13.4 30-30-13.4-30-30-30zm0 10c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20zm0 5c8.3 0 15 6.7 15 15s-6.7 15-15 15-15-6.7-15-15 6.7-15 15-15z'/></svg>" alt="لوگو راحین">
+                <h1>راحین</h1>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#home">خانه</a></li>
+                    <li><a href="#products">محصولات</a></li>
+                    <li><a href="#about">درباره ما</a></li>
+                    <li><a href="#features">ویژگی‌ها</a></li>
+                    <li><a href="#contact">تماس با ما</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
         </div>
     </header>
 
-    <div class="container">
-        <!-- جدول تناوبی -->
-        <div class="periodic-table" id="periodicTable">
-            <!-- عناصر به صورت دینامیک اضافه خواهند شد -->
-        </div>
-
-        <!-- پنل اطلاعات عنصر -->
-        <div class="element-details" id="elementDetails">
-            <div class="element-header">
-                <div class="element-preview" id="elementPreview">
-                    <span id="elementSymbol">H</span>
-                </div>
-                <div class="element-info">
-                    <h2 id="elementName">هیدروژن</h2>
-                    <span class="element-category" id="elementCategory">غیرفلز</span>
-                    <p id="elementDescription">سبک‌ترین و فراوان‌ترین عنصر در جهان</p>
-                </div>
-            </div>
-            
-            <div class="element-properties">
-                <div class="property-card">
-                    <h4>عدد اتمی</h4>
-                    <p id="atomicNumber">1</p>
-                </div>
-                <div class="property-card">
-                    <h4>جرم اتمی</h4>
-                    <p id="atomicMass">1.008</p>
-                </div>
-                <div class="property-card">
-                    <h4>چگالی</h4>
-                    <p id="density">0.08988 g/L</p>
-                </div>
-                <div class="property-card">
-                    <h4>نقطه ذوب</h4>
-                    <p id="meltingPoint">-259.16 °C</p>
-                </div>
-                <div class="property-card">
-                    <h4>نقطه جوش</h4>
-                    <p id="boilingPoint">-252.87 °C</p>
-                </div>
-                <div class="property-card">
-                    <h4>الکترونگاتیوی</h4>
-                    <p id="electronegativity">2.20</p>
-                </div>
-                <div class="property-card">
-                    <h4>کشف شده توسط</h4>
-                    <p id="discoveredBy">هنری کاوندیش</p>
-                </div>
-                <div class="property-card">
-                    <h4>سال کشف</h4>
-                    <p id="discoveryYear">1766</p>
-                </div>
-                <div class="property-card">
-                    <h4>پیکربندی الکترونی</h4>
-                    <p id="electronConfig">1s¹</p>
-                </div>
-                <div class="property-card">
-                    <h4>حالت اکسایش</h4>
-                    <p id="oxidationStates">+1, -1</p>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <video autoplay muted loop class="hero-video">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-herbs-and-spices-falling-on-a-table-14144-large.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <h1 class="animate fade-in-up">طبیعت ناب در <span class="text-accent">هر قطره</span></h1>
+            <p class="animate fade-in-up delay-1">عرقیات گیاهی ارگانیک و باکیفیت از دل طبیعت بکر میمند، تجربه‌ای فراموش‌نشدنی از طعم و خواص طبیعت</p>
+            <div class="hero-btns">
+                <a href="#products" class="btn-3d pulse animate fade-in-up delay-2"><i class="fas fa-shopping-basket"></i> مشاهده محصولات</a>
+                <a href="#about" class="btn-outline animate fade-in-up delay-3"><i class="fas fa-info-circle"></i> درباره ما</a>
             </div>
         </div>
+    </section>
 
-        <!-- ابزارهای شیمی -->
-        <div class="tools-section">
-            <h2 style="font-size: 2rem; margin-bottom: 1.5rem; color: var(--primary);">ابزارهای پیشرفته شیمی</h2>
-            
-            <div class="tools-grid">
-                <div class="tool-card" id="stoichiometryTool">
-                    <i class="fas fa-calculator"></i>
-                    <h3>ماشین حساب استوکیومتری</h3>
-                    <p>محاسبه نسبت‌های کمی در واکنش‌های شیمیایی</p>
-                </div>
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-title animate fade-in-up">
+            <h2>راحین، اصالت و کیفیت</h2>
+            <p>با بیش از دو دهه تجربه در تولید عرقیات گیاهی و محصولات ارگانیک</p>
+        </div>
+        <div class="about-content">
+            <div class="about-text animate fade-in-up">
+                <h3>داستان ما</h3>
+                <p>راحین در سال 1380 با هدف تولید عرقیات گیاهی باکیفیت و ارگانیک در منطقه میمند فارس تأسیس شد. ما با تکیه بر دانش بومی و استفاده از تکنولوژی روز، محصولاتی منحصر به فرد تولید می‌کنیم که ترکیبی از اصالت و نوآوری است.</p>
+                <p>مزرعه‌های ما در دل طبیعت بکر میمند قرار دارد که با آب و هوای خاص و خاک حاصلخیز، بهترین شرایط را برای کشت گیاهان دارویی فراهم کرده است. تمامی مراحل تولید از کشت تا بسته‌بندی تحت نظارت دقیق انجام می‌شود.</p>
                 
-                <div class="tool-card" id="molecularTool">
-                    <i class="fas fa-atom"></i>
-                    <h3>شبیه‌ساز ساختار مولکولی</h3>
-                    <p>طراحی و مشاهده ساختار سه‌بعدی مولکول‌ها</p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <i class="fas fa-leaf"></i>
+                        <div>
+                            <h4>ارگانیک</h4>
+                            <p>استفاده از روش‌های طبیعی بدون مواد شیمیایی</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-award"></i>
+                        <div>
+                            <h4>کیفیت</h4>
+                            <p>تضمین کیفیت با استانداردهای بین‌المللی</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <h4>سلامت</h4>
+                            <p>توجه به سلامت مصرف‌کننده در تمام مراحل</p>
+                        </div>
+                    </div>
+                    <div class="about-feature">
+                        <i class="fas fa-recycle"></i>
+                        <div>
+                            <h4>پایدار</h4>
+                            <p>تولید پایدار با کمترین اثر بر محیط زیست</p>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="tool-card" id="concentrationTool">
-                    <i class="fas fa-vial"></i>
-                    <h3>محاسبه گر غلظت</h3>
-                    <p>محاسبه مولاریته، نرمالیته و درصد غلظت محلول‌ها</p>
+            </div>
+            <div class="about-image animate fade-in-up delay-1">
+                <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="مزرعه گیاهان دارویی راحین">
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="section-title animate fade-in-up">
+            <h2>محصولات ویژه</h2>
+            <p>انتخابی از بهترین محصولات ارگانیک و طبیعی</p>
+        </div>
+        <div class="products-container">
+            <div class="product-grid">
+                <!-- Product 1 - گلاب -->
+                <div class="product-card animate fade-in-up">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="گلاب اصل میمند">
+                        <div class="product-badge">پرفروش</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>گلاب اصل میمند</h3>
+                        <p>گلاب خالص و مرغوب با عطر و طعم بی‌نظیر، استخراج شده از گل محمدی تازه منطقه میمند. مناسب برای مصارف خوراکی، آرایشی و درمانی.</p>
+                        <div class="product-price">
+                            <span class="price">120,000</span>
+                            <a href="#" class="btn-3d"><i class="fas fa-shopping-cart"></i> افزودن به سبد</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 2 - بیدمشک -->
+                <div class="product-card animate fade-in-up delay-1">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="عرق بیدمشک">
+                        <div class="product-badge">محبوب</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>عرق بیدمشک</h3>
+                        <p>عرق بیدمشک خالص با خواص آرامش‌بخش و تقویت قلب و اعصاب. مناسب برای رفع استرس و بی‌خوابی.</p>
+                        <div class="product-price">
+                            <span class="price">95,000</span>
+                            <a href="#" class="btn-3d"><i class="fas fa-shopping-cart"></i> افزودن به سبد</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 3 - نسترن -->
+                <div class="product-card animate fade-in-up delay-2">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="عرق نسترن">
+                    </div>
+                    <div class="product-info">
+                        <h3>عرق نسترن</h3>
+                        <p>عرق نسترن طبیعی با خواص تقویت سیستم ایمنی و ضد التهاب. مناسب برای بهبود سرماخوردگی و آلرژی.</p>
+                        <div class="product-price">
+                            <span class="price">85,000</span>
+                            <a href="#" class="btn-3d"><i class="fas fa-shopping-cart"></i> افزودن به سبد</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 4 - نعنا -->
+                <div class="product-card animate fade-in-up">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="عرق نعنا فلفلی">
+                    </div>
+                    <div class="product-info">
+                        <h3>عرق نعنا فلفلی</h3>
+                        <p>عرق نعنا فلفلی با خواص ضد نفخ و بهبود گوارش. مناسب برای رفع سوءهاضمه و مشکلات معده.</p>
+                        <div class="product-price">
+                            <span class="price">75,000</span>
+                            <a href="#" class="btn-3d"><i class="fas fa-shopping-cart"></i> افزودن به سبد</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 5 - کاسنی -->
+                <div class="product-card animate fade-in-up delay-1">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="عرق کاسنی">
+                        <div class="product-badge">جدید</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>عرق کاسنی</h3>
+                        <p>عرق کاسنی خالص با خواص تصفیه خون و کبد. مناسب برای سم‌زدایی بدن و کاهش قند خون.</p>
+                        <div class="product-price">
+                            <span class="price">80,000</span>
+                            <a href="#" class="btn-3d"><i class="fas fa-shopping-cart"></i> افزودن به سبد</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product 6 - عسل -->
+                <div class="product-card animate fade-in-up delay-2">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="عسل طبیعی">
+                        <div class="product-badge">ویژه</div>
+                    </div>
+                    <div class="product-info">
+                        <h3>عسل طبیعی کوهستان</h3>
+                        <p>عسل طبیعی و ارگانیک با خواص درمانی و تغذیه‌ای بی‌نظیر. جمع‌آوری شده از دشت‌های میمند.</p>
+                        <div class="product-price">
+                            <span class="price">250,000</span>
+                            <a href="#" class="btn-3d"><i class="fas fa-shopping-cart"></i> افزودن به سبد</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-title animate fade-in-up">
+            <h2>چرا راحین؟</h2>
+            <p>ویژگی‌هایی که ما را متمایز می‌کند</p>
+        </div>
+        <div class="feature-grid">
+            <!-- Feature 1 -->
+            <div class="feature-card animate fade-in-up">
+                <div class="feature-icon">
+                    <i class="fas fa-leaf"></i>
+                </div>
+                <h3>طبیعی و ارگانیک</h3>
+                <p>تمامی محصولات ما از گیاهان ارگانیک و بدون استفاده از مواد شیمیایی تولید می‌شوند. ما به سلامت شما و محیط زیست اهمیت می‌دهیم.</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="feature-card animate fade-in-up delay-1">
+                <div class="feature-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>کیفیت بالا</h3>
+                <p>کیفیت بی‌نظیر محصولات ما نتیجه سال‌ها تجربه و استفاده از بهترین روش‌های تولید است. ما از استانداردهای بین‌المللی پیروی می‌کنیم.</p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="feature-card animate fade-in-up delay-2">
+                <div class="feature-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <h3>ارسال سریع</h3>
+                <p>ارسال سریع و مطمئن به تمام نقاط کشور با بسته‌بندی ویژه و ضد ضربه. تحویل در کمترین زمان ممکن با گارانتی بازگشت کالا.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="section-title animate fade-in-up">
+            <h2>نظرات مشتریان</h2>
+            <p>تجربیات واقعی از محصولات راحین</p>
+        </div>
+        <div class="testimonials-container">
+            <div class="testimonial-slider">
+                <div class="testimonial-track">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card animate fade-in">
+                        <div class="testimonial-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="مشتری">
+                        </div>
+                        <div class="testimonial-text">
+                            گلاب راحین واقعاً بی‌نظیر است. عطر و طعم آن کاملاً متفاوت و خاص است. از زمانی که از محصولات راحین استفاده می‌کنم، دیگر سراغ برند دیگری نرفته‌ام.
+                        </div>
+                        <div class="testimonial-author">- زهرا محمدی</div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card animate fade-in">
+                        <div class="testimonial-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="مشتری">
+                        </div>
+                        <div class="testimonial-text">
+                            عرق بیدمشک راحین به شدت آرامش‌بخش است. من که مشکل بی‌خوابی داشتم، با مصرف روزانه آن واقعاً بهبود پیدا کردم. ممنون از محصولات باکیفیت شما.
+                        </div>
+                        <div class="testimonial-author">- علی رضایی</div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card animate fade-in">
+                        <div class="testimonial-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="مشتری">
+                        </div>
+                        <div class="testimonial-text">
+                            عسل راحین واقعاً طبیعی و خالص است. تفاوت آن با عسل‌های دیگر کاملاً محسوس است. به همه دوستانم هم توصیه کرده‌ام و همه راضی هستند.
+                        </div>
+                        <div class="testimonial-author">- فاطمه حسینی</div>
+                        <div class="testimonial-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-nav">
+                    <div class="slider-dot active"></div>
+                    <div class="slider-dot"></div>
+                    <div class="slider-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-title animate fade-in-up">
+            <h2>تماس با ما</h2>
+            <p>آماده پاسخگویی به سوالات شما هستیم</p>
+        </div>
+        <div class="contact-container">
+            <div class="contact-info animate fade-in-up">
+                <h3>اطلاعات تماس</h3>
+                <div class="contact-details">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>آدرس</h4>
+                            <p>استان فارس، شهرستان میمند، بلوار امام خمینی، کوچه 15</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>تلفن</h4>
+                            <p>071-12345678</p>
+                            <p>0912-3456789</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h4>ایمیل</h4>
+                            <p>info@raheen.com</p>
+                            <p>sales@raheen.com</p>
+                        </div>
+                    </div>
+                </div>
+                <h3>ساعات کاری</h3>
+                <p>شنبه تا چهارشنبه: 8 صبح تا 5 بعدازظهر</p>
+                <p>پنجشنبه: 8 صبح تا 1 بعدازظهر</p>
+                
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="contact-form animate fade-in-up delay-1">
+                <form>
+                    <div class="form-group">
+                        <label for="name">نام کامل</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">ایمیل</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">تلفن همراه</label>
+                        <input type="tel" id="phone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">پیام شما</label>
+                        <textarea id="message" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-3d"><i class="fas fa-paper-plane"></i> ارسال پیام</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
-        <div class="container">
-            <p>تمامی اطلاعات بر اساس آخرین داده‌های IUPAC به روزرسانی شده‌اند</p>
-            <div class="creator">
-                طراحی و توسعه توسط: <strong>محمدجواد میرشکاری</strong> | تمام حقوق محفوظ است © 2023
+        <div class="footer-container">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path fill='%23ffffff' d='M50 0c27.6 0 50 22.4 50 50s-22.4 50-50 50S0 77.6 0 50 22.4 0 50 0zm0 20c-16.6 0-30 13.4-30 30s13.4 30 30 30 30-13.4 30-30-13.4-30-30-30zm0 10c11 0 20 9 20 20s-9 20-20 20-20-9-20-20 9-20 20-20zm0 5c8.3 0 15 6.7 15 15s-6.7 15-15 15-15-6.7-15-15 6.7-15 15-15z'/></svg>" alt="لوگو راحین">
+                    <h2>راحین</h2>
+                </div>
+                <p>تولید کننده عرقیات گیاهی و محصولات ارگانیک با بیش از 20 سال سابقه درخشان در منطقه میمند فارس. ما به کیفیت و سلامت محصولاتمان افتخار می‌کنیم.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
             </div>
+            <div class="footer-col">
+                <h3>لینک‌های سریع</h3>
+                <ul>
+                    <li><a href="#home">خانه</a></li>
+                    <li><a href="#products">محصولات</a></li>
+                    <li><a href="#about">درباره ما</a></li>
+                    <li><a href="#features">ویژگی‌ها</a></li>
+                    <li><a href="#contact">تماس با ما</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>محصولات</h3>
+                <ul>
+                    <li><a href="#">گلاب</a></li>
+                    <li><a href="#">عرق بیدمشک</a></li>
+                    <li><a href="#">عرق نسترن</a></li>
+                    <li><a href="#">عرق نعنا</a></li>
+                    <li><a href="#">عرق کاسنی</a></li>
+                    <li><a href="#">عسل طبیعی</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>خدمات مشتریان</h3>
+                <ul>
+                    <li><a href="#">سوالات متداول</a></li>
+                    <li><a href="#">روش‌های پرداخت</a></li>
+                    <li><a href="#">شرایط بازگشت کالا</a></li>
+                    <li><a href="#">حریم خصوصی</a></li>
+                    <li><a href="#">قوانین و مقررات</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 راحین - تمامی حقوق محفوظ است</p>
+        </div>
+        <div class="developer-credit">
+            توسعه داده شده با <i class="fas fa-heart" style="color: #ff4757;"></i> توسط <a href="#">مهندس محمد جواد میرشکاری</a>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        // ایجاد نمونه از جدول تناوبی
-        const table = new PeriodicTable();
-        
-        // دریافت تمام عناصر
-        const allElements = table.getAllElements();
-        
-        // تابع برای تبدیل نام دسته‌بندی انگلیسی به فارسی
-        function getCategoryName(category) {
-            const categories = {
-                'diatomic nonmetal': 'غیرفلز دواتمی',
-                'noble gas': 'گاز نجیب',
-                'alkali metal': 'فلز قلیایی',
-                'alkaline earth metal': 'فلز قلیایی خاکی',
-                'metalloid': 'شبه فلز',
-                'polyatomic nonmetal': 'غیرفلز چنداتمی',
-                'post-transition metal': 'فلز پس‌انتقالی',
-                'transition metal': 'فلز واسطه',
-                'lanthanide': 'لانتانید',
-                'actinide': 'آکتینید'
-            };
-            return categories[category] || category;
-        }
-        
-        // تابع برای تبدیل واحد کلوین به سلسیوس
-        function kelvinToCelsius(k) {
-            if (!k) return "نامشخص";
-            return (k - 273.15).toFixed(2) + " °C";
-        }
-        
-        // تابع برای ایجاد جدول تناوبی
-        function generatePeriodicTable() {
-            const periodicTable = document.getElementById('periodicTable');
-            
-            // ابتدا 118 خانه خالی ایجاد می‌کنیم
-            for (let i = 0; i < 118; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'element empty';
-                periodicTable.appendChild(cell);
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navUl = document.querySelector('nav ul');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navUl.style.display = navUl.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Header Scroll Effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
             }
+        });
+
+        // Testimonial Slider
+        const track = document.querySelector('.testimonial-track');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+            track.style.transform = `translateX(-${index * 100}%)`;
             
-            // سپس عناصر را در جایگاه صحیح قرار می‌دهیم
-            allElements.forEach(element => {
-                const position = (element.ypos - 1) * 18 + (element.xpos - 1);
-                if (periodicTable.children[position]) {
-                    periodicTable.children[position].innerHTML = `
-                        <div class="number">${element.number}</div>
-                        <div class="symbol">${element.symbol}</div>
-                        <div class="name">${element.name}</div>
-                    `;
-                    
-                    // تعیین دسته‌بندی رنگ
-                    let elementClass = '';
-                    if (element.category.includes('alkali metal')) {
-                        elementClass = 'alkali';
-                    } else if (element.category.includes('alkaline earth metal')) {
-                        elementClass = 'alkaline';
-                    } else if (element.category.includes('transition metal')) {
-                        elementClass = 'transition';
-                    } else if (element.category.includes('post-transition metal')) {
-                        elementClass = 'post-transition';
-                    } else if (element.category.includes('metalloid')) {
-                        elementClass = 'metalloid';
-                    } else if (element.category.includes('nonmetal')) {
-                        elementClass = 'nonmetal';
-                    } else if (element.category.includes('halogen')) {
-                        elementClass = 'halogen';
-                    } else if (element.category.includes('noble gas')) {
-                        elementClass = 'noble';
-                    } else if (element.category.includes('lanthanide')) {
-                        elementClass = 'lanthanide';
-                    } else if (element.category.includes('actinide')) {
-                        elementClass = 'actinide';
-                    }
-                    
-                    periodicTable.children[position].className = `element ${elementClass}`;
-                    periodicTable.children[position].setAttribute('data-element', element.number);
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            
+            currentSlide = index;
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto slide change
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % dots.length;
+            goToSlide(currentSlide);
+        }, 7000);
+
+        // Animation on scroll
+        const animateElements = document.querySelectorAll('.animate');
+
+        function checkScroll() {
+            animateElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
                 }
             });
-            
-            // افزودن رویداد کلیک به عناصر
-            const elements = document.querySelectorAll('.element:not(.empty)');
-            const elementDetails = document.getElementById('elementDetails');
-            const elementPreview = document.getElementById('elementPreview');
-            
-            elements.forEach(element => {
-                element.addEventListener('click', function() {
-                    const elementNumber = this.getAttribute('data-element');
-                    const elementData = table.get(elementNumber);
+        }
+
+        // Initial check
+        checkScroll();
+
+        // Check on scroll
+        window.addEventListener('scroll', checkScroll);
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
                     
-                    // پر کردن اطلاعات
-                    document.getElementById('elementName').textContent = elementData.name;
-                    document.getElementById('elementSymbol').textContent = elementData.symbol;
-                    document.getElementById('elementCategory').textContent = getCategoryName(elementData.category);
-                    document.getElementById('elementDescription').textContent = elementData.summary || "اطلاعاتی موجود نیست";
-                    document.getElementById('atomicNumber').textContent = elementData.number;
-                    document.getElementById('atomicMass').textContent = elementData.atomic_mass ? elementData.atomic_mass.toFixed(3) : "نامشخص";
-                    document.getElementById('density').textContent = elementData.density ? `${elementData.density} g/cm³` : "نامشخص";
-                    document.getElementById('meltingPoint').textContent = kelvinToCelsius(elementData.melt);
-                    document.getElementById('boilingPoint').textContent = kelvinToCelsius(elementData.boil);
-                    document.getElementById('electronegativity').textContent = elementData.electronegativity_pauling || "نامشخص";
-                    document.getElementById('discoveredBy').textContent = elementData.discovered_by || "نامشخص";
-                    document.getElementById('discoveryYear').textContent = elementData.year_discovered || "نامشخص";
-                    document.getElementById('electronConfig').textContent = elementData.electron_configuration || "نامشخص";
-                    document.getElementById('oxidationStates').textContent = elementData.oxidation_states || "نامشخص";
-                    
-                    // تنظیم رنگ پیش‌نمایش
-                    elementPreview.className = 'element-preview';
-                    if (elementData.category.includes('alkali metal')) {
-                        elementPreview.classList.add('alkali');
-                    } else if (elementData.category.includes('alkaline earth metal')) {
-                        elementPreview.classList.add('alkaline');
-                    } else if (elementData.category.includes('transition metal')) {
-                        elementPreview.classList.add('transition');
-                    } else if (elementData.category.includes('post-transition metal')) {
-                        elementPreview.classList.add('post-transition');
-                    } else if (elementData.category.includes('metalloid')) {
-                        elementPreview.classList.add('metalloid');
-                    } else if (elementData.category.includes('nonmetal')) {
-                        elementPreview.classList.add('nonmetal');
-                    } else if (elementData.category.includes('halogen')) {
-                        elementPreview.classList.add('halogen');
-                    } else if (elementData.category.includes('noble gas')) {
-                        elementPreview.classList.add('noble');
-                    } else if (elementData.category.includes('lanthanide')) {
-                        elementPreview.classList.add('lanthanide');
-                    } else if (elementData.category.includes('actinide')) {
-                        elementPreview.classList.add('actinide');
+                    // Close mobile menu if open
+                    if (navUl.style.display === 'flex') {
+                        navUl.style.display = 'none';
                     }
-                    
-                    // نمایش پنل اطلاعات
-                    elementDetails.style.display = 'block';
-                    
-                    // اسکرول به پنل اطلاعات
-                    elementDetails.scrollIntoView({ behavior: 'smooth' });
-                });
+                }
+            });
+        });
+
+        // Form submission
+        const contactForm = document.querySelector('.contact-form form');
+        
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Here you would typically send the form data to a server
+                alert('پیام شما با موفقیت ارسال شد. به زودی با شما تماس خواهیم گرفت.');
+                this.reset();
+            });
+        }
+
+        // Particles.js Configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#3a7d44"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 5,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3a7d44",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 2,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 0.5
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // 3D Hover Effect for Product Cards
+        const productCards = document.querySelectorAll('.product-card');
+        
+        productCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const angleX = (y - centerY) / 20;
+                const angleY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-20px)`;
             });
             
-            // نمایش اطلاعات هیدروژن به صورت پیش‌فرض
-            const hydrogen = table.get(1);
-            document.getElementById('elementName').textContent = hydrogen.name;
-            document.getElementById('elementSymbol').textContent = hydrogen.symbol;
-            document.getElementById('elementCategory').textContent = getCategoryName(hydrogen.category);
-            document.getElementById('elementDescription').textContent = hydrogen.summary;
-            document.getElementById('atomicNumber').textContent = hydrogen.number;
-            document.getElementById('atomicMass').textContent = hydrogen.atomic_mass.toFixed(3);
-            document.getElementById('density').textContent = "0.08988 g/L";
-            document.getElementById('meltingPoint').textContent = "-259.16 °C";
-            document.getElementById('boilingPoint').textContent = "-252.87 °C";
-            document.getElementById('electronegativity').textContent = "2.20";
-            document.getElementById('discoveredBy').textContent = "هنری کاوندیش";
-            document.getElementById('discoveryYear').textContent = "1766";
-            document.getElementById('electronConfig').textContent = "1s¹";
-            document.getElementById('oxidationStates').textContent = "+1, -1";
-            elementPreview.classList.add('nonmetal');
-            elementDetails.style.display = 'block';
-        }
-        
-        // اجرای تابع پس از بارگذاری صفحه
-        document.addEventListener('DOMContentLoaded', generatePeriodicTable);
-        
-        // ابزارهای شیمی
-        document.getElementById('stoichiometryTool').addEventListener('click', function() {
-            alert('ابزار استوکیومتری در حال توسعه است!');
-        });
-        
-        document.getElementById('molecularTool').addEventListener('click', function() {
-            alert('شبیه‌ساز مولکولی در حال توسعه است!');
-        });
-        
-        document.getElementById('concentrationTool').addEventListener('click', function() {
-            alert('محاسبه گر غلظت در حال توسعه است!');
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(-20px)';
+            });
         });
     </script>
 </body>
