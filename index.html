@@ -3,544 +3,537 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محمدجواد میرشکاری | برنامه‌نویس هوش مصنوعی و توسعه‌دهنده اندروید</title>
-    
-    <!-- فونت‌ها و آیکون‌ها -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=IranSans&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- استایل‌های پیشرفته -->
+    <title>راحین | فروشگاه گلاب و عرقیات گیاهی و بومگردی میمند</title>
     <style>
         :root {
-            --primary-color: #6c5ce7;
-            --primary-dark: #5649c0;
-            --secondary-color: #a29bfe;
-            --dark-color: #2d3436;
-            --dark-light: #636e72;
-            --light-color: #f5f6fa;
-            --white: #ffffff;
-            --success-color: #00b894;
-            --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --primary: #6D8B74;
+            --secondary: #EFEAD8;
+            --accent: #D0B8A8;
+            --dark: #5F7161;
+            --light: #F8F4EA;
+            --text: #333333;
+            --white: #FFFFFF;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'IranSans', 'Roboto', sans-serif;
-            background-color: var(--light-color);
-            color: var(--dark-color);
-            line-height: 1.8;
-            overflow-x: hidden;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        /* استایل‌های عمومی */
-        .container {
-            width: 90%;
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        /* Neumorphism Effect */
+        .neumorph {
+            border-radius: 15px;
+            background: var(--light);
+            box-shadow:  8px 8px 16px #d9d5cc,
+                        -8px -8px 16px #ffffff;
+        }
+
+        /* 3D Button Effect */
+        .btn-3d {
+            position: relative;
+            display: inline-block;
+            padding: 12px 24px;
+            color: var(--white);
+            background: var(--primary);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 0 var(--dark);
+        }
+
+        .btn-3d:hover {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 var(--dark);
+        }
+
+        .btn-3d:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 var(--dark);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 15px;
+            padding: 0 2rem;
         }
 
-        section {
-            padding: 6rem 0;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--secondary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, transparent 0%, rgba(0,0,0,0.5) 100%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 2rem;
+            z-index: 1;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* About Section */
+        .about {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
+            position: relative;
         }
 
         .section-title h2 {
-            font-size: 2.8rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            position: relative;
+            font-size: 2.5rem;
+            color: var(--primary);
             display: inline-block;
         }
 
         .section-title h2::after {
             content: '';
             position: absolute;
-            bottom: -15px;
-            right: 50%;
-            transform: translateX(50%);
-            width: 100px;
-            height: 4px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            border-radius: 2px;
-        }
-
-        /* هدر و معرفی */
-        .header {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9)), 
-                        url('https://uploadkon.ir/uploads/ef6e09_25Screenshot-53-.png') no-repeat center center/cover;
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-        }
-
-        .header-text {
-            flex: 1;
-            min-width: 300px;
-            animation: fadeInLeft 1s ease-out;
-        }
-
-        .header-text h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-        }
-
-        .header-text .title {
-            font-size: 1.8rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 2.5rem;
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            backdrop-filter: blur(5px);
-        }
-
-        .header-text p {
-            margin-bottom: 3rem;
-            font-size: 1.2rem;
-            max-width: 600px;
-            opacity: 0.9;
-        }
-
-        .header-image {
-            flex: 1;
-            min-width: 300px;
-            text-align: center;
-            position: relative;
-            animation: fadeInRight 1s ease-out;
-        }
-
-        .header-image img {
-            width: 350px;
-            height: 350px;
-            border-radius: 20px;
-            object-fit: cover;
-            border: 15px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.2);
-            transform: rotate(5deg);
-            transition: var(--transition);
-        }
-
-        .header-image:hover img {
-            transform: rotate(0deg);
-        }
-
-        /* بخش درباره من */
-        .about {
-            background: var(--white);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent);
         }
 
         .about-content {
             display: flex;
+            gap: 3rem;
             align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 4rem;
         }
 
         .about-text {
             flex: 1;
-            min-width: 300px;
-        }
-
-        .about-text h3 {
-            font-size: 2.2rem;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
-            position: relative;
-            display: inline-block;
-        }
-
-        .about-text h3::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: 0;
-            width: 50%;
-            height: 3px;
-            background: var(--secondary-color);
         }
 
         .about-text p {
-            margin-bottom: 2rem;
-            color: var(--dark-light);
+            margin-bottom: 1.5rem;
             font-size: 1.1rem;
         }
 
-        .info-grid {
+        .about-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s;
+        }
+
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        /* Products Section */
+        .products {
+            padding: 5rem 2rem;
+            background-color: var(--secondary);
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
         }
 
-        .info-item {
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent);
+            color: var(--white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .product-info p {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .product-price {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            background: var(--light-color);
-            padding: 1rem;
-            border-radius: 10px;
-            transition: var(--transition);
+            margin-top: 1rem;
         }
 
-        .info-item:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--box-shadow);
+        .price {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--dark);
         }
 
-        .info-item i {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-            margin-left: 1rem;
+        /* Features Section */
+        .features {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .info-content h4 {
-            font-size: 1rem;
-            color: var(--dark-light);
-            margin-bottom: 0.3rem;
-        }
-
-        .info-content span {
-            font-weight: 700;
-            color: var(--dark-color);
-        }
-
-        /* بخش مهارت‌ها */
-        .skills {
-            background: var(--light-color);
-        }
-
-        .skills-container {
+        .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
-        .skills-box {
-            background: var(--white);
-            padding: 2.5rem;
+        .feature-card {
+            padding: 2rem;
+            text-align: center;
             border-radius: 15px;
-            box-shadow: var(--box-shadow);
-            transition: var(--transition);
-            border-top: 4px solid var(--primary-color);
+            transition: transform 0.3s;
         }
 
-        .skills-box:hover {
+        .feature-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
 
-        .skills-box h3 {
-            font-size: 1.6rem;
-            margin-bottom: 2rem;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
         }
 
-        .skills-box h3 i {
-            margin-left: 1rem;
-            font-size: 1.8rem;
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
 
-        .skill-item {
-            margin-bottom: 1.8rem;
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 2rem;
+            background-color: var(--secondary);
         }
 
-        .skill-info {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.8rem;
-        }
-
-        .skill-name {
-            font-weight: 600;
-        }
-
-        .skill-percent {
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .skill-bar {
-            height: 12px;
-            background: var(--light-color);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .skill-progress {
-            height: 100%;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            border-radius: 6px;
-            position: relative;
-            transition: width 1.5s ease-in-out;
-        }
-
-        /* بخش سوابق کاری */
-        .experience {
-            background: var(--white);
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 800px;
+        .testimonials-container {
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 50%;
-            transform: translateX(50%);
-            width: 3px;
-            height: 100%;
-            background: var(--primary-color);
-        }
-
-        .timeline-item {
-            padding: 2rem 0;
+        .testimonial-slider {
             position: relative;
-            width: 100%;
+            overflow: hidden;
         }
 
-        .timeline-item:nth-child(odd) {
-            padding-right: 50%;
-            text-align: left;
-        }
-
-        .timeline-item:nth-child(even) {
-            padding-left: 50%;
-            text-align: right;
-        }
-
-        .timeline-content {
-            background: var(--light-color);
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: var(--box-shadow);
-            position: relative;
-            transition: var(--transition);
-        }
-
-        .timeline-content:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .timeline-content::before {
-            content: '';
-            position: absolute;
-            top: 30px;
-            width: 20px;
-            height: 20px;
-            background: var(--light-color);
-            transform: rotate(45deg);
-        }
-
-        .timeline-item:nth-child(odd) .timeline-content::before {
-            left: -10px;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content::before {
-            right: -10px;
-        }
-
-        .timeline-date {
-            display: inline-block;
-            background: var(--primary-color);
-            color: var(--white);
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-
-        .timeline-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-        }
-
-        .timeline-company {
-            font-size: 1.1rem;
-            color: var(--dark-light);
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .timeline-description {
-            color: var(--dark-light);
-        }
-
-        .timeline-icon {
-            position: absolute;
-            top: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--white);
-            border-radius: 50%;
+        .testimonial-track {
             display: flex;
-            align-items: center;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-card {
+            min-width: 100%;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+        }
+
+        .testimonial-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .testimonial-text::before,
+        .testimonial-text::after {
+            content: '"';
+            font-size: 2rem;
+            color: var(--accent);
+            opacity: 0.5;
+        }
+
+        .testimonial-text::before {
+            margin-right: 5px;
+        }
+
+        .testimonial-text::after {
+            margin-left: 5px;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .slider-nav {
+            display: flex;
             justify-content: center;
-            box-shadow: 0 0 0 5px var(--primary-color);
+            margin-top: 2rem;
+            gap: 1rem;
         }
 
-        .timeline-item:nth-child(odd) .timeline-icon {
-            right: -25px;
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: opacity 0.3s, transform 0.3s;
         }
 
-        .timeline-item:nth-child(even) .timeline-icon {
-            left: -25px;
+        .slider-dot.active {
+            opacity: 1;
+            transform: scale(1.2);
         }
 
-        .timeline-icon i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        /* بخش تماس */
+        /* Contact Section */
         .contact {
-            background: linear-gradient(135deg, rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9));
-            color: var(--white);
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .contact-container {
             display: flex;
-            flex-wrap: wrap;
             gap: 3rem;
         }
 
         .contact-info {
             flex: 1;
-            min-width: 300px;
         }
 
         .contact-info h3 {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            display: inline-block;
-        }
-
-        .contact-info h3::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            right: 0;
-            width: 50%;
-            height: 3px;
-            background: var(--white);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
         }
 
         .contact-details {
-            margin-bottom: 3rem;
+            margin-bottom: 2rem;
         }
 
         .contact-item {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        .contact-item i {
-            font-size: 1.5rem;
-            margin-left: 1rem;
-            margin-top: 0.3rem;
-        }
-
-        .contact-text h4 {
+        .contact-icon {
             font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-text a {
-            color: var(--white);
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .contact-text a:hover {
-            text-decoration: underline;
-        }
-
-        .social-media {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .social-media a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: var(--white);
-            font-size: 1.5rem;
-            transition: var(--transition);
-            backdrop-filter: blur(5px);
-        }
-
-        .social-media a:hover {
-            background: var(--white);
-            color: var(--primary-color);
-            transform: translateY(-5px);
+            color: var(--primary);
+            margin-left: 1rem;
+            margin-top: 3px;
         }
 
         .contact-form {
             flex: 1;
-            min-width: 300px;
-            background: var(--white);
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: var(--box-shadow);
         }
 
         .form-group {
             margin-bottom: 1.5rem;
         }
 
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
         .form-control {
             width: 100%;
-            padding: 1rem;
+            padding: 0.8rem 1rem;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
-            transition: var(--transition);
-            font-family: inherit;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         .form-control:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 139, 116, 0.2);
         }
 
         textarea.form-control {
@@ -548,374 +541,322 @@
             resize: vertical;
         }
 
-        .submit-btn {
-            background: var(--primary-color);
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
             color: var(--white);
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 600;
-            width: 100%;
+            padding: 3rem 2rem 1.5rem;
         }
 
-        .submit-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
-        /* فوتر */
-        .footer {
-            background: var(--dark-color);
-            color: var(--white);
-            text-align: center;
-            padding: 3rem 0;
-        }
-
-        .footer p {
+        .footer-col h3 {
+            font-size: 1.3rem;
             margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .footer-col ul {
             list-style: none;
-            margin-bottom: 2rem;
         }
 
-        .footer-links li {
-            margin: 0 1rem;
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
         }
 
-        .footer-links a {
-            color: var(--white);
+        .footer-col ul li a {
+            color: var(--secondary);
             text-decoration: none;
-            transition: var(--transition);
+            transition: color 0.3s;
         }
 
-        .footer-links a:hover {
-            color: var(--secondary-color);
+        .footer-col ul li a:hover {
+            color: var(--white);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent);
+            transform: translateY(-5px);
         }
 
         .copyright {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* انیمیشن‌ها */
-        @keyframes fadeInLeft {
-            from {
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { 
                 opacity: 0;
-                transform: translateX(-50px);
+                transform: translateY(50px);
             }
-            to {
+            to { 
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateY(0);
             }
         }
 
-        @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .animate {
+            animation-duration: 1s;
+            animation-fill-mode: both;
         }
 
-        /* رسپانسیو */
+        .fade-in {
+            animation-name: fadeIn;
+        }
+
+        .slide-in-up {
+            animation-name: slideInUp;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive Styles */
         @media (max-width: 992px) {
-            .header-text h1 {
-                font-size: 2.8rem;
+            .about-content {
+                flex-direction: column;
             }
-            
-            .header-text .title {
-                font-size: 1.5rem;
-            }
-            
-            .section-title h2 {
-                font-size: 2.2rem;
+
+            .contact-container {
+                flex-direction: column;
             }
         }
 
         @media (max-width: 768px) {
-            .header {
-                height: auto;
-                padding: 8rem 0;
+            .header-container {
+                padding: 0 1rem;
             }
-            
-            .header-content {
-                flex-direction: column-reverse;
-                text-align: center;
+
+            nav ul {
+                display: none;
             }
-            
-            .header-text {
-                margin-top: 3rem;
+
+            .mobile-menu-btn {
+                display: block;
             }
-            
-            .header-buttons {
-                justify-content: center;
+
+            .hero h2 {
+                font-size: 2.2rem;
             }
-            
-            .timeline::before {
-                right: 31px;
+
+            .hero p {
+                font-size: 1rem;
             }
-            
-            .timeline-item:nth-child(odd),
-            .timeline-item:nth-child(even) {
-                padding-right: 0;
-                padding-left: 80px;
-                text-align: left;
-            }
-            
-            .timeline-icon {
-                right: auto;
-                left: 5px;
+
+            .section-title h2 {
+                font-size: 2rem;
             }
         }
 
         @media (max-width: 576px) {
-            .header-text h1 {
-                font-size: 2.2rem;
-            }
-            
-            .header-text .title {
-                font-size: 1.2rem;
-            }
-            
-            .section-title h2 {
+            .hero h2 {
                 font-size: 1.8rem;
             }
-            
-            .section-title h2::after {
-                width: 70px;
+
+            .btn-3d {
+                padding: 10px 20px;
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- هدر -->
-    <header class="header" id="home">
-        <div class="container">
-            <div class="header-content">
-                <div class="header-text">
-                    <h1>محمدجواد میرشکاری</h1>
-                    <span class="title">برنامه‌نویس هوش مصنوعی و توسعه‌دهنده اندروید</span>
-                    <p>
-                        توسعه‌دهنده پرشور و خلاق با تخصص در برنامه‌نویسی پایتون، طراحی اپلیکیشن‌های اندرویدی و توسعه راه‌حل‌های مبتنی بر هوش مصنوعی. با تجربه کار در پروژه‌های بزرگ و استارتاپ‌های موفق.
-                    </p>
-                    <div class="header-buttons">
-                        <a href="#contact" class="btn btn-primary">تماس با من</a>
-                        <a href="#projects" class="btn btn-outline">نمونه کارها</a>
-                    </div>
-                </div>
-                <div class="header-image">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80" alt="محمدجواد میرشکاری">
-                </div>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="https://via.placeholder.com/50x50" alt="راحین">
+                <h1>راحین</h1>
             </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">خانه</a></li>
+                    <li><a href="#products">محصولات</a></li>
+                    <li><a href="#about">درباره ما</a></li>
+                    <li><a href="#features">ویژگی‌ها</a></li>
+                    <li><a href="#contact">تماس با ما</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
         </div>
     </header>
 
-    <!-- بخش درباره من -->
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content animate fade-in">
+            <h2 class="animate slide-in-up">عرقیات گیاهی و بومگردی میمند</h2>
+            <p class="animate slide-in-up delay-1">طبیعت را با تمام وجود تجربه کنید با محصولات ارگانیک و طبیعی راحین</p>
+            <a href="#products" class="btn-3d animate slide-in-up delay-2">مشاهده محصولات</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
     <section class="about" id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>درباره من</h2>
-                <p>بیوگرافی و اطلاعات شخصی من</p>
+        <div class="about-container">
+            <div class="section-title animate fade-in">
+                <h2>درباره راحین</h2>
             </div>
-            
             <div class="about-content">
-                <div class="about-text">
-                    <h3>من کیستم؟</h3>
-                    <p>
-                        من محمدجواد میرشکاری، یک برنامه‌نویس جوان و پرانرژی هستم که از 15 سالگی وارد دنیای برنامه‌نویسی شدم. تخصص اصلی من در توسعه اپلیکیشن‌های اندرویدی و برنامه‌نویسی هوش مصنوعی با پایتون است.
-                    </p>
-                    <p>
-                        با وجود سن کم، تجربه کار در پروژه‌های بزرگ مانند بازار، دیوار و تلگرام را داشته‌ام و همواره به دنبال یادگیری تکنولوژی‌های جدید و چالش‌های نوین هستم.
-                    </p>
-                    
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <i class="fas fa-user"></i>
-                            <div class="info-content">
-                                <h4>نام:</h4>
-                                <span>محمدجواد میرشکاری</span>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <i class="fas fa-phone"></i>
-                            <div class="info-content">
-                                <h4>تلفن:</h4>
-                                <span>09176647611</span>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <i class="fas fa-envelope"></i>
-                            <div class="info-content">
-                                <h4>ایمیل:</h4>
-                                <span>technoogen@gmail.com</span>
-                            </div>
-                        </div>
-                        
-                        <div class="info-item">
-                            <i class="fas fa-graduation-cap"></i>
-                            <div class="info-content">
-                                <h4>تحصیلات:</h4>
-                                <span>دبیرستان طالقانی - ریاضی فیزیک</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <a href="#" class="btn btn-primary">دانلود رزومه</a>
+                <div class="about-text animate slide-in-up">
+                    <p>راحین با بیش از دو دهه تجربه در تولید عرقیات گیاهی و محصولات ارگانیک، همواره کیفیت و سلامت مشتریان را در اولویت قرار داده است.</p>
+                    <p>ما با بهره‌گیری از دانش بومی و روش‌های سنتی، همراه با تکنولوژی مدرن، محصولاتی با بالاترین کیفیت و خالص‌ترین عطر و طعم ارائه می‌دهیم.</p>
+                    <p>مزرعه‌های ما در منطقه میمند فارس، با آب و هوای خاص و خاک حاصلخیز، بهترین شرایط را برای کشت گیاهان دارویی فراهم کرده است.</p>
+                    <a href="#contact" class="btn-3d">تماس با ما</a>
+                </div>
+                <div class="about-image animate slide-in-up delay-1">
+                    <img src="https://images.unsplash.com/photo-1605000797499-95a51c5269ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" alt="مزرعه گیاهان دارویی">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- بخش مهارت‌ها -->
-    <section class="skills" id="skills">
-        <div class="container">
-            <div class="section-title">
-                <h2>مهارت‌های من</h2>
-                <p>تخصص‌ها و توانایی‌های حرفه‌ای من</p>
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="products-container">
+            <div class="section-title animate fade-in">
+                <h2>محصولات ما</h2>
             </div>
-            
-            <div class="skills-container">
-                <div class="skills-box">
-                    <h3><i class="fab fa-android"></i>توسعه اندروید</h3>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">Kotlin</span>
-                            <span class="skill-percent">90%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 90%;"></div>
-                        </div>
+            <div class="product-grid">
+                <!-- Product 1 -->
+                <div class="product-card animate slide-in-up">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="گلاب">
                     </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">Java</span>
-                            <span class="skill-percent">85%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 85%;"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">Android SDK</span>
-                            <span class="skill-percent">88%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 88%;"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">Jetpack Compose</span>
-                            <span class="skill-percent">80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 80%;"></div>
+                    <div class="product-info">
+                        <h3>گلاب اصل میمند</h3>
+                        <p>گلاب خالص و مرغوب با عطر و طعم بی‌نظیر، استخراج شده از گل محمدی تازه</p>
+                        <div class="product-price">
+                            <span class="price">120,000 تومان</span>
+                            <a href="#" class="btn-3d">خرید</a>
                         </div>
                     </div>
                 </div>
-                
-                <div class="skills-box">
-                    <h3><i class="fab fa-python"></i>هوش مصنوعی</h3>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">Python</span>
-                            <span class="skill-percent">95%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 95%;"></div>
-                        </div>
+
+                <!-- Product 2 -->
+                <div class="product-card animate slide-in-up delay-1">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="بیدمشک">
                     </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">TensorFlow</span>
-                            <span class="skill-percent">85%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 85%;"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">PyTorch</span>
-                            <span class="skill-percent">80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 80%;"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">OpenCV</span>
-                            <span class="skill-percent">75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 75%;"></div>
+                    <div class="product-info">
+                        <h3>عرق بیدمشک</h3>
+                        <p>عرق بیدمشک خالص با خواص آرامش‌بخش و تقویت قلب و اعصاب</p>
+                        <div class="product-price">
+                            <span class="price">95,000 تومان</span>
+                            <a href="#" class="btn-3d">خرید</a>
                         </div>
                     </div>
                 </div>
-                
-                <div class="skills-box">
-                    <h3><i class="fas fa-code"></i>توسعه وب</h3>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">HTML/CSS</span>
-                            <span class="skill-percent">90%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 90%;"></div>
+
+                <!-- Product 3 -->
+                <div class="product-card animate slide-in-up delay-2">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="نسترن">
+                    </div>
+                    <div class="product-info">
+                        <h3>عرق نسترن</h3>
+                        <p>عرق نسترن طبیعی با خواص تقویت سیستم ایمنی و ضد التهاب</p>
+                        <div class="product-price">
+                            <span class="price">85,000 تومان</span>
+                            <a href="#" class="btn-3d">خرید</a>
                         </div>
                     </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">JavaScript</span>
-                            <span class="skill-percent">80%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 80%;"></div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card animate slide-in-up">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="نعنا">
+                    </div>
+                    <div class="product-info">
+                        <h3>عرق نعنا فلفلی</h3>
+                        <p>عرق نعنا فلفلی با خواص ضد نفخ و بهبود گوارش</p>
+                        <div class="product-price">
+                            <span class="price">75,000 تومان</span>
+                            <a href="#" class="btn-3d">خرید</a>
                         </div>
                     </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">React</span>
-                            <span class="skill-percent">75%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 75%;"></div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="product-card animate slide-in-up delay-1">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="کاسنی">
+                    </div>
+                    <div class="product-info">
+                        <h3>عرق کاسنی</h3>
+                        <p>عرق کاسنی خالص با خواص تصفیه خون و کبد</p>
+                        <div class="product-price">
+                            <span class="price">80,000 تومان</span>
+                            <a href="#" class="btn-3d">خرید</a>
                         </div>
                     </div>
-                    
-                    <div class="skill-item">
-                        <div class="skill-info">
-                            <span class="skill-name">Node.js</span>
-                            <span class="skill-percent">70%</span>
-                        </div>
-                        <div class="skill-bar">
-                            <div class="skill-progress" style="width: 70%;"></div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="product-card animate slide-in-up delay-2">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318181409-cf64c0ee0a5e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="عسل">
+                    </div>
+                    <div class="product-info">
+                        <h3>عسل طبیعی</h3>
+                        <p>عسل طبیعی و ارگانیک با خواص درمانی و تغذیه‌ای بی‌نظیر</p>
+                        <div class="product-price">
+                            <span class="price">250,000 تومان</span>
+                            <a href="#" class="btn-3d">خرید</a>
                         </div>
                     </div>
                 </div>
@@ -923,225 +864,297 @@
         </div>
     </section>
 
-    <!-- بخش سوابق کاری -->
-    <section class="experience" id="experience">
-        <div class="container">
-            <div class="section-title">
-                <h2>سوابق کاری</h2>
-                <p>تجربیات حرفه‌ای و پروژه‌های من</p>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <div class="section-title animate fade-in">
+                <h2>چرا راحین؟</h2>
             </div>
-            
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-date">1401 - حال حاضر</span>
-                        <h3 class="timeline-title">توسعه‌دهنده اندروید</h3>
-                        <span class="timeline-company">شرکت خدمات مجازی</span>
-                        <p class="timeline-description">
-                            توسعه و نگهداری اپلیکیشن‌های موبایل با استفاده از Kotlin و Jetpack Compose. پیاده‌سازی ماژول‌های پرداخت و احراز هویت. بهینه‌سازی عملکرد اپلیکیشن‌ها و کاهش مصرف باتری.
-                        </p>
+            <div class="feature-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card neumorph animate slide-in-up">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
                     </div>
-                    <div class="timeline-icon">
-                        <i class="fas fa-briefcase"></i>
-                    </div>
+                    <h3>طبیعی و ارگانیک</h3>
+                    <p>تمامی محصولات ما از گیاهان ارگانیک و بدون استفاده از مواد شیمیایی تولید می‌شوند.</p>
                 </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-date">1400 - 1401</span>
-                        <h3 class="timeline-title">برنامه‌نویس هوش مصنوعی</h3>
-                        <span class="timeline-company">پروژه‌های مستقل</span>
-                        <p class="timeline-description">
-                            توسعه مدل‌های یادگیری ماشین برای پردازش تصویر و متن. پیاده‌سازی الگوریتم‌های پیشنهادگر برای سیستم‌های توصیه‌گر. آموزش مدل‌های تشخیص چهره و اشیا با دقت بالا.
-                        </p>
+
+                <!-- Feature 2 -->
+                <div class="feature-card neumorph animate slide-in-up delay-1">
+                    <div class="feature-icon">
+                        <i class="fas fa-medal"></i>
                     </div>
-                    <div class="timeline-icon">
-                        <i class="fas fa-robot"></i>
-                    </div>
+                    <h3>کیفیت بالا</h3>
+                    <p>کیفیت بی‌نظیر محصولات ما نتیجه سال‌ها تجربه و استفاده از بهترین روش‌های تولید است.</p>
                 </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-date">1399 - 1400</span>
-                        <h3 class="timeline-title">توسعه‌دهنده وب</h3>
-                        <span class="timeline-company">فریلنسر</span>
-                        <p class="timeline-description">
-                            طراحی و توسعه وبسایت‌های شرکتی و شخصی با استفاده از React و Node.js. پیاده‌سازی پنل‌های مدیریت و سیستم‌های لاگین. بهینه‌سازی سئو و افزایش سرعت بارگذاری صفحات.
-                        </p>
+
+                <!-- Feature 3 -->
+                <div class="feature-card neumorph animate slide-in-up delay-2">
+                    <div class="feature-icon">
+                        <i class="fas fa-truck"></i>
                     </div>
-                    <div class="timeline-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                </div>
-                
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-date">1398 - 1399</span>
-                        <h3 class="timeline-title">کارآموز برنامه‌نویسی</h3>
-                        <span class="timeline-company">شرکت فناوری اطلاعات</span>
-                        <p class="timeline-description">
-                            یادگیری مفاهیم پایه برنامه‌نویسی و توسعه نرم‌افزار. مشارکت در پروژه‌های کوچک تحت نظارت مربیان. آشنایی با فرآیندهای توسعه نرم‌افزار و کار تیمی.
-                        </p>
-                    </div>
-                    <div class="timeline-icon">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
+                    <h3>ارسال سریع</h3>
+                    <p>ارسال سریع و مطمئن به تمام نقاط کشور با بسته‌بندی ویژه و ضد ضربه.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- بخش تماس -->
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="testimonials-container">
+            <div class="section-title animate fade-in">
+                <h2>نظرات مشتریان</h2>
+            </div>
+            <div class="testimonial-slider">
+                <div class="testimonial-track">
+                    <!-- Testimonial 1 -->
+                    <div class="testimonial-card animate fade-in">
+                        <div class="testimonial-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="مشتری">
+                        </div>
+                        <div class="testimonial-text">
+                            گلاب راحین واقعاً بی‌نظیر است. عطر و طعم آن کاملاً متفاوت و خاص است. از زمانی که از محصولات راحین استفاده می‌کنم، دیگر سراغ برند دیگری نرفته‌ام.
+                        </div>
+                        <div class="testimonial-author">- زهرا محمدی</div>
+                    </div>
+
+                    <!-- Testimonial 2 -->
+                    <div class="testimonial-card animate fade-in">
+                        <div class="testimonial-avatar">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="مشتری">
+                        </div>
+                        <div class="testimonial-text">
+                            عرق بیدمشک راحین به شدت آرامش‌بخش است. من که مشکل بی‌خوابی داشتم، با مصرف روزانه آن واقعاً بهبود پیدا کردم. ممنون از محصولات باکیفیت شما.
+                        </div>
+                        <div class="testimonial-author">- علی رضایی</div>
+                    </div>
+
+                    <!-- Testimonial 3 -->
+                    <div class="testimonial-card animate fade-in">
+                        <div class="testimonial-avatar">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="مشتری">
+                        </div>
+                        <div class="testimonial-text">
+                            عسل راحین واقعاً طبیعی و خالص است. تفاوت آن با عسل‌های دیگر کاملاً محسوس است. به همه دوستانم هم توصیه کرده‌ام و همه راضی هستند.
+                        </div>
+                        <div class="testimonial-author">- فاطمه حسینی</div>
+                    </div>
+                </div>
+                <div class="slider-nav">
+                    <div class="slider-dot active"></div>
+                    <div class="slider-dot"></div>
+                    <div class="slider-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
     <section class="contact" id="contact">
-        <div class="container">
-            <div class="section-title">
-                <h2>تماس با من</h2>
-                <p>برای همکاری یا دریافت مشاوره با من در ارتباط باشید</p>
+        <div class="contact-container">
+            <div class="section-title animate fade-in">
+                <h2>تماس با ما</h2>
             </div>
-            
-            <div class="contact-container">
+            <div class="contact-container animate slide-in-up">
                 <div class="contact-info">
                     <h3>اطلاعات تماس</h3>
-                    
                     <div class="contact-details">
                         <div class="contact-item">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <div class="contact-text">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
                                 <h4>آدرس</h4>
-                                <span>تهران، ایران</span>
+                                <p>استان فارس، شهرستان میمند، 100 متر بالای پارک شقایق</p>
                             </div>
                         </div>
-                        
                         <div class="contact-item">
-                            <i class="fas fa-phone"></i>
-                            <div class="contact-text">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
                                 <h4>تلفن</h4>
-                                <a href="tel:+989176647611">09176647611</a>
+                                <p>071-12345678</p>
                             </div>
                         </div>
-                        
                         <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <div class="contact-text">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
                                 <h4>ایمیل</h4>
-                                <a href="mailto:technoogen@gmail.com">technoogen@gmail.com</a>
-                            </div>
-                        </div>
-                        
-                        <div class="contact-item">
-                            <i class="fab fa-telegram"></i>
-                            <div class="contact-text">
-                                <h4>تلگرام</h4>
-                                <a href="https://t.me/technogen_ir" target="_blank">@technogen_ir</a>
+                                <p>info@raheen.com</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <h3 style="margin-top: 3rem;">شبکه‌های اجتماعی</h3>
-                    <div class="social-media">
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
+                    <h3>ساعات کاری</h3>
+                    <p>شنبه تا چهارشنبه: 8 صبح تا 5 بعدازظهر</p>
+                    <p>پنجشنبه و جمعه: 8 صبح تا  پاسی از شب </p>
                 </div>
-                
-                <form class="contact-form">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="نام شما" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="email" class="form-control" placeholder="آدرس ایمیل" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="موضوع">
-                    </div>
-                    
-                    <div class="form-group">
-                        <textarea class="form-control" placeholder="پیام شما" required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">ارسال پیام</button>
-                </form>
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">نام کامل</label>
+                            <input type="text" id="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">ایمیل</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">تلفن همراه</label>
+                            <input type="tel" id="phone" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">پیام شما</label>
+                            <textarea id="message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-3d">ارسال پیام</button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- فوتر -->
-    <footer class="footer">
-        <div class="container">
-            <p>برای همکاری و پروژه‌های جدید با من در تماس باشید</p>
-            
-            <ul class="footer-links">
-                <li><a href="#home">خانه</a></li>
-                <li><a href="#about">درباره من</a></li>
-                <li><a href="#skills">مهارت‌ها</a></li>
-                <li><a href="#experience">سوابق</a></li>
-                <li><a href="#contact">تماس</a></li>
-            </ul>
-            
-            <p class="copyright">© 2023 تمامی حقوق برای محمدجواد میرشکاری محفوظ است.</p>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>راحین</h3>
+                <p>تولید کننده عرقیات گیاهی و محصولات ارگانیک با بیش از 20 سال سابقه درخشان</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>لینک‌های سریع</h3>
+                <ul>
+                    <li><a href="#home">خانه</a></li>
+                    <li><a href="#products">محصولات</a></li>
+                    <li><a href="#about">درباره ما</a></li>
+                    <li><a href="#features">ویژگی‌ها</a></li>
+                    <li><a href="#contact">تماس با ما</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>محصولات</h3>
+                <ul>
+                    <li><a href="#">گلاب</a></li>
+                    <li><a href="#">عرق بیدمشک</a></li>
+                    <li><a href="#">عرق نسترن</a></li>
+                    <li><a href="#">عرق نعنا</a></li>
+                    <li><a href="#">عرق کاسنی</a></li>
+                    <li><a href="#">عسل طبیعی</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>خدمات مشتریان</h3>
+                <ul>
+                    <li><a href="#">سوالات متداول</a></li>
+                    <li><a href="#">روش‌های پرداخت</a></li>
+                    <li><a href="#">شرایط بازگشت کالا</a></li>
+                    <li><a href="#">حریم خصوصی</a></li>
+                    <li><a href="#">قوانین و مقررات</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 راحین - تمامی حقوق محفوظ است</p>
         </div>
     </footer>
 
-    <!-- اسکریپت‌ها -->
     <script>
-        // انیمیشن مهارت‌ها هنگام اسکرول
-        const skillBars = document.querySelectorAll('.skill-progress');
-        
-        function animateSkills() {
-            skillBars.forEach(bar => {
-                const width = bar.style.width;
-                bar.style.width = '0';
-                setTimeout(() => {
-                    bar.style.width = width;
-                }, 100);
-            });
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navUl = document.querySelector('nav ul');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navUl.style.display = navUl.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Testimonial Slider
+        const track = document.querySelector('.testimonial-track');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+            track.style.transform = `translateX(-${index * 100}%)`;
+            
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            
+            currentSlide = index;
         }
-        
-        // مشاهده مهارت‌ها هنگام اسکرول
-        const skillsSection = document.querySelector('.skills');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateSkills();
-                    observer.unobserve(entry.target);
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto slide change
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % dots.length;
+            goToSlide(currentSlide);
+        }, 5000);
+
+        // Animation on scroll
+        const animateElements = document.querySelectorAll('.animate');
+
+        function checkScroll() {
+            animateElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = '1';
                 }
             });
-        }, {threshold: 0.2});
-        
-        observer.observe(skillsSection);
-        
-        // فرم تماس
-        const contactForm = document.querySelector('.contact-form');
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('پیام شما با موفقیت ارسال شد! به زودی با شما تماس خواهم گرفت.');
-            contactForm.reset();
-        });
-        
-        // اسکرول نرم
+        }
+
+        // Initial check
+        checkScroll();
+
+        // Check on scroll
+        window.addEventListener('scroll', checkScroll);
+
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    if (navUl.style.display === 'flex') {
+                        navUl.style.display = 'none';
+                    }
+                }
             });
         });
+
+        // Form submission
+        const contactForm = document.querySelector('.contact-form form');
         
-        // تغییر نوار ناوبری هنگام اسکرول
-        const navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Here you would typically send the form data to a server
+                alert('پیام شما با موفقیت ارسال شد. به زودی با شما تماس خواهیم گرفت.');
+                this.reset();
+            });
+        }
     </script>
 </body>
 </html>
